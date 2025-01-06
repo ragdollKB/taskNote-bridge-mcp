@@ -1,5 +1,6 @@
 import mcp.types as types
 
+
 def get_tools_list() -> list[types.Tool]:
     """Return the list of available tools."""
     return [
@@ -53,7 +54,7 @@ def get_tools_list() -> list[types.Tool]:
                 "required": [],
             },
         ),
-        
+
         # List views
         types.Tool(
             name="get-inbox",
@@ -118,7 +119,7 @@ def get_tools_list() -> list[types.Tool]:
                 "required": [],
             },
         ),
-        
+
         # Tag operations
         types.Tool(
             name="get-tags",
@@ -149,7 +150,7 @@ def get_tools_list() -> list[types.Tool]:
                 "required": ["tag"],
             },
         ),
-        
+
         # Search operations
         types.Tool(
             name="search-todos",
@@ -201,7 +202,7 @@ def get_tools_list() -> list[types.Tool]:
                 "required": [],
             },
         ),
-        
+
         # Recent items
         types.Tool(
             name="get-recent",
@@ -218,4 +219,227 @@ def get_tools_list() -> list[types.Tool]:
                 "required": ["period"],
             },
         ),
+
+        # Things URL Scheme tools
+
+        types.Tool(
+            name="add-todo",
+            description="Create a new todo in Things",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "description": "Title of the todo"
+                    },
+                    "notes": {
+                        "type": "string",
+                        "description": "Notes for the todo"
+                    },
+                    "when": {
+                        "type": "string",
+                        "description": "When to schedule the todo (today, tomorrow, evening, anytime, someday, or YYYY-MM-DD)"
+                    },
+                    "deadline": {
+                        "type": "string",
+                        "description": "Deadline for the todo (YYYY-MM-DD)"
+                    },
+                    "tags": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                        "description": "Tags to apply to the todo"
+                    },
+                    "checklist_items": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                        "description": "Checklist items to add"
+                    },
+                    "list_id": {
+                        "type": "string",
+                        "description": "ID of project/area to add to"
+                    },
+                    "list_title": {
+                        "type": "string",
+                        "description": "Title of project/area to add to"
+                    },
+                    "heading": {
+                        "type": "string",
+                        "description": "Heading to add under"
+                    }
+                },
+                "required": ["title"]
+            }
+        ),
+
+        types.Tool(
+            name="add-project",
+            description="Create a new project in Things",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "description": "Title of the project"
+                    },
+                    "notes": {
+                        "type": "string",
+                        "description": "Notes for the project"
+                    },
+                    "when": {
+                        "type": "string",
+                        "description": "When to schedule the project"
+                    },
+                    "deadline": {
+                        "type": "string",
+                        "description": "Deadline for the project"
+                    },
+                    "tags": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                        "description": "Tags to apply to the project"
+                    },
+                    "area_id": {
+                        "type": "string",
+                        "description": "ID of area to add to"
+                    },
+                    "area_title": {
+                        "type": "string",
+                        "description": "Title of area to add to"
+                    },
+                    "todos": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                        "description": "Initial todos to create in the project"
+                    }
+                },
+                "required": ["title"]
+            }
+        ),
+
+        types.Tool(
+            name="update-todo",
+            description="Update an existing todo in Things",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "ID of the todo to update"
+                    },
+                    "title": {
+                        "type": "string",
+                        "description": "New title"
+                    },
+                    "notes": {
+                        "type": "string",
+                        "description": "New notes"
+                    },
+                    "when": {
+                        "type": "string",
+                        "description": "New schedule"
+                    },
+                    "deadline": {
+                        "type": "string",
+                        "description": "New deadline"
+                    },
+                    "tags": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                        "description": "New tags"
+                    },
+                    "completed": {
+                        "type": "boolean",
+                        "description": "Mark as completed"
+                    },
+                    "canceled": {
+                        "type": "boolean",
+                        "description": "Mark as canceled"
+                    }
+                },
+                "required": ["id"]
+            }
+        ),
+
+        types.Tool(
+            name="update-project",
+            description="Update an existing project in Things",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "ID of the project to update"
+                    },
+                    "title": {
+                        "type": "string",
+                        "description": "New title"
+                    },
+                    "notes": {
+                        "type": "string",
+                        "description": "New notes"
+                    },
+                    "when": {
+                        "type": "string",
+                        "description": "New schedule"
+                    },
+                    "deadline": {
+                        "type": "string",
+                        "description": "New deadline"
+                    },
+                    "tags": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                        "description": "New tags"
+                    },
+                    "completed": {
+                        "type": "boolean",
+                        "description": "Mark as completed"
+                    },
+                    "canceled": {
+                        "type": "boolean",
+                        "description": "Mark as canceled"
+                    }
+                },
+                "required": ["id"]
+            }
+        ),
+
+        types.Tool(
+            name="show-item",
+            description="Show a specific item or list in Things",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "ID of item to show, or one of: inbox, today, upcoming, anytime, someday, logbook"
+                    },
+                    "query": {
+                        "type": "string",
+                        "description": "Optional query to filter by"
+                    },
+                    "filter_tags": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                        "description": "Optional tags to filter by"
+                    }
+                },
+                "required": ["id"]
+            }
+        ),
+
+        types.Tool(
+            name="search-items",
+            description="Search for items in Things",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "query": {
+                        "type": "string",
+                        "description": "Search query"
+                    }
+                },
+                "required": ["query"]
+            }
+        )
     ]
