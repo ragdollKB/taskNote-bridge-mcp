@@ -53,20 +53,11 @@ def format_todo(todo: dict) -> str:
             pass
     
     # Add tags if present
-    if todo.get('tag_uuids'):
-        try:
-            tag_titles = []
-            for tag_uuid in todo['tag_uuids']:
-                tag = things.get(tag_uuid)
-                if tag:
-                    tag_titles.append(tag['title'])
-            if tag_titles:
-                todo_text += f"\nTags: {', '.join(tag_titles)}"
-        except Exception:
-            pass
+    if todo.get('tags'):
+        todo_text += f"\nTags: {', '.join(todo['tags'])}"
     
-    # Add checklist if present
-    if todo.get('checklist'):
+    # Add checklist if present and contains items
+    if isinstance(todo.get('checklist'), list):
         todo_text += "\nChecklist:"
         for item in todo['checklist']:
             status = "✓" if item['status'] == 'completed' else "□"
