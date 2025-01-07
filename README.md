@@ -1,6 +1,8 @@
 # Things MCP Server
 
-This MCP server provides access to Things 3 task management data through a standardized interface. It allows AI assistants and other applications to interact with Things data in a controlled and secure way.
+This [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction) server lets you use Claude Desktop to interact with your task management data in [Things app](https://culturedcode.com/things). You can ask Claude to create tasks, analyze projects, help manage priorities, and more.
+
+This server leverages the [Things.py](https://github.com/thingsapi/things.py) library and the [Things URL Scheme](https://culturedcode.com/things/help/url-scheme/). 
 
 ## Features
 
@@ -12,27 +14,61 @@ This MCP server provides access to Things 3 task management data through a stand
 - Detailed item information including checklists
 - Support for nested data (projects within areas, todos within projects)
 
-## File Structure
+## Installation (for Claude Desktop)
 
-- `things_server.py` - Main server entry point
-- `tools.py` - Tool definitions and schemas
-- `handlers.py` - Tool execution handlers
-- `formatters.py` - Output formatting functions
+1. Prerequisites 
+* Python 3.12+
+* Claude Desktop
+* Things 3 ("Enable Things URLs" must be turned on in Settings -> General)
 
-## Installation
-
-1. Ensure you have Things 3 installed and running
-2. Install the required Python packages:
+2. Install uv if you haven't already:
 ```bash
-pip install things.py mcp
+curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
+Resart your terminal afterwards.
 
-## Usage
-
-To start the server:
+3. Clone this repository:
 ```bash
-python things_server.py
+git clone https://github.com/hald/things-mcp
 ```
+4. Install the required Python packages:
+```bash
+cd things-mcp
+uv venv
+uv pip install -r pyproject.toml
+```
+5. Edit the Claude Desktop configuration file:
+```bash
+code ~/Library/Application\ Support/Claude/claude_desktop_config.json
+```
+Add the Things server to the mcpServers key to the configuration file (be sure to update the path to the folder where you installed these files):
+```json
+{
+    "mcpServers": {
+        "things": {
+            "command": "uv",
+            "args": [
+                "--directory",
+                "/ABSOLUTE/PATH/TO/PARENT/FOLDER/things-mcp",
+                "run",
+                "things_server.py"
+            ]
+        }
+    }
+}
+```
+Restart the Claude Desktop app.
+
+### Sample Usage with Claude Desktop
+* "What's on my todo list today?"
+* "Create a todo to pack for my beach vacation next week, include a packling checklist."
+* "Evaluate my current todos using the Eisenhower matrix."
+* "Help me conduct a GTD-style weekly review using Things."
+
+#### Tips
+* Create a project in Claude with custom instructions that explains how you use Things and organize areas, projects, tags, etc. Tell Claude what information you want included when it creates a new task (eg asking it to include relevant details in the task description might be helpful).
+* Try adding another MCP server that gives Claude access to your calendar. This will let you ask Claude to block time on your calendar for specific tasks, create todos from upcoming calendar events (eg prep for a meeting), etc.
+
 
 ### Available Tools
 
@@ -81,36 +117,17 @@ python things_server.py
 ### get-recent
 - `period` - Time period (e.g., '3d', '1w', '2m', '1y')
 
-## Example Tool Calls
 
-Get todos from inbox:
-```python
-await session.call_tool("get-inbox", {})
-```
+## Troubleshooting
 
-Get todos from a specific project:
-```python
-await session.call_tool("get-todos", {
-    "project_uuid": "YOUR-PROJECT-UUID",
-    "include_items": True
-})
-```
-
-Advanced search:
-```python
-await session.call_tool("search-advanced", {
-    "status": "incomplete",
-    "tag": "Priority",
-    "deadline": "2024-01-31"
-})
-```
-
-## Error Handling
-
-The server includes comprehensive error handling:
+The server includes error handling for:
 - Invalid UUIDs
 - Missing required parameters
 - Things database access errors
 - Data formatting errors
 
-All errors are logged and returned with descriptive messages.
+All errors are logged and returned with descriptive messages. To review the MCP logs from Claude Desktop, run this in the Terminal:
+```bash
+# Follow logs in real-time
+tail -n 20 -f ~/Library/Logs/Claude/mcp*.log
+```
