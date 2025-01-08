@@ -4,6 +4,8 @@ This [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction
 
 This server leverages the [Things.py](https://github.com/thingsapi/things.py) library and the [Things URL Scheme](https://culturedcode.com/things/help/url-scheme/). 
 
+<a href="https://glama.ai/mcp/servers/t9cgixg2ah"><img width="380" height="200" src="https://glama.ai/mcp/servers/t9cgixg2ah/badge" alt="Things Server MCP server" /></a>
+
 ## Features
 
 - Access to all major Things lists (Inbox, Today, Upcoming, etc.)
