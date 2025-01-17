@@ -23,11 +23,19 @@ async def handle_tool_call(
                 "get-upcoming": things.upcoming,
                 "get-anytime": things.anytime,
                 "get-someday": things.someday,
-                "get-logbook": things.logbook,
-                "get-trash": things.trash
+                "get-trash": things.trash,
             }
 
-            todos = list_funcs[name]()
+            if name == "get-logbook":
+                # Handle logbook with limits
+                period = arguments.get("period", "7d") if arguments else "7d"
+                limit = arguments.get("limit", 50) if arguments else 50
+                todos = things.last(period, status='completed')
+                if todos and len(todos) > limit:
+                    todos = todos[:limit]
+            else:
+                todos = list_funcs[name]()
+
             if not todos:
                 return [types.TextContent(type="text", text="No items found")]
 

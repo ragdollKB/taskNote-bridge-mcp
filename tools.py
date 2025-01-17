@@ -103,10 +103,22 @@ def get_tools_list() -> list[types.Tool]:
         ),
         types.Tool(
             name="get-logbook",
-            description="Get completed todos from Logbook",
+            description="Get completed todos from Logbook, defaults to last 7 days",
             inputSchema={
                 "type": "object",
-                "properties": {},
+                "properties": {
+                    "period": {
+                        "type": "string",
+                        "description": "Time period to look back (e.g., '3d', '1w', '2m', '1y'). Defaults to '7d'",
+                        "pattern": "^\\d+[dwmy]$"
+                    },
+                    "limit": {
+                        "type": "integer",
+                        "description": "Maximum number of entries to return. Defaults to 50",
+                        "minimum": 1,
+                        "maximum": 100
+                    }
+                },
                 "required": [],
             },
         ),
