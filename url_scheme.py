@@ -69,11 +69,16 @@ def add_project(title: str, notes: Optional[str] = None, when: Optional[str] = N
         'notes': notes,
         'when': when,
         'deadline': deadline,
-        'tags': tags,
         'area-id': area_id,
         'area': area_title,
-        'to-dos': todos
+        # Change todos to be newline separated
+        'to-dos': '\n'.join(todos) if todos else None
     }
+    
+    # Handle tags separately since they need to be comma-separated
+    if tags:
+        params['tags'] = ','.join(tags)
+        
     return construct_url('add-project', {k: v for k, v in params.items() if v is not None})
 
 def update_todo(id: str, title: Optional[str] = None, notes: Optional[str] = None,
