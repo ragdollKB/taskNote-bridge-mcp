@@ -1,0 +1,7 @@
+{
+  "name": "tasknote-bridge",
+  "description": "TaskNote Bridge - Things 3 + Apple Notes MCP Tool",
+  "lockfileVersion": 2,
+  "requires": true,
+  "packages": {}
+}

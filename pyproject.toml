@@ -1,7 +1,7 @@
 [project]
-name = "things-mcp"
+name = "tasknote-bridge"
 version = "0.1.0"
-description = "Things app Model Context Protocol (MCP) server"
+description = "TaskNote Bridge - Things 3 + Apple Notes MCP Tool"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
@@ -9,3 +9,7 @@ dependencies = [
     "mcp[cli]>=1.2.0",
     "things-py>=0.0.15",
 ]
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"

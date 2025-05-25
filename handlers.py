@@ -4,8 +4,12 @@ import things
 import mcp.types as types
 from formatters import format_todo, format_project, format_area, format_tag
 import url_scheme
+from apple_notes import AppleNotesManager
 
 logger = logging.getLogger(__name__)
+
+# Initialize Apple Notes manager
+notes_manager = AppleNotesManager()
 
 
 async def handle_tool_call(
@@ -205,7 +209,7 @@ async def handle_tool_call(
 
             url = url_scheme.search(arguments["query"])
             url_scheme.execute_url(url)
-            return [types.TextContent(type="text", text=f"Searching for '{arguments['query']}'")][types.TextContent(type="text", text="Created new todo")]
+            return [types.TextContent(type="text", text=f"Searching for '{arguments['query']}'")]
 
         elif name == "add-project":
             if not arguments or "title" not in arguments:
@@ -268,7 +272,122 @@ async def handle_tool_call(
                 filter_tags=arguments.get("filter_tags")
             )
             url_scheme.execute_url(url)
-            return
+            return [types.TextContent(type="text", text=f"Opened '{arguments['id']}' in Things app")]
+
+        elif name == "open-todo":
+            if not arguments or "title" not in arguments:
+                raise ValueError("Missing title parameter")
+
+            title = arguments["title"]
+            
+            # Search for todos matching the title
+            todos = things.search(title)
+            
+            if not todos:
+                return [types.TextContent(type="text", text=f"No todos found matching '{title}'")]
+            
+            # Find the best match (exact title match first, then partial)
+            exact_match = None
+            partial_matches = []
+            
+            for todo in todos:
+                if todo['title'].lower() == title.lower():
+                    exact_match = todo
+                    break
+                elif title.lower() in todo['title'].lower():
+                    partial_matches.append(todo)
+            
+            # Use exact match if found, otherwise use first partial match
+            todo_to_open = exact_match if exact_match else (partial_matches[0] if partial_matches else todos[0])
+            
+            # Open the todo using its UUID
+            url = url_scheme.show(id=todo_to_open['uuid'])
+            url_scheme.execute_url(url)
+            
+            return [types.TextContent(type="text", text=f"✅ Opened todo: \"{todo_to_open['title']}\" in Things app")]
+
+        # Apple Notes handlers
+        elif name == "notes-create":
+            if not arguments:
+                raise ValueError("Missing arguments")
+            
+            title = arguments.get("title")
+            content = arguments.get("content")
+            tags = arguments.get("tags", [])
+            
+            if not title:
+                raise ValueError("Title is required")
+            if not content:
+                raise ValueError("Content is required")
+            
+            note = notes_manager.create_note(title, content, tags)
+            
+            if note:
+                return [types.TextContent(type="text", text=f"✅ Note created successfully: \"{note.title}\"")]
+            else:
+                return [types.TextContent(type="text", text="Failed to create note. Please check your Apple Notes configuration.")]
+
+        elif name == "notes-search":
+            if not arguments or "query" not in arguments:
+                raise ValueError("Missing query parameter")
+            
+            query = arguments["query"]
+            notes = notes_manager.search_notes(query)
+            
+            if notes:
+                note_list = [f"• {note.title}" for note in notes]
+                message = f"Found {len(notes)} notes:\n" + "\n".join(note_list)
+            else:
+                message = "No notes found matching your query"
+            
+            return [types.TextContent(type="text", text=message)]
+
+        elif name == "notes-get-content":
+            if not arguments or "title" not in arguments:
+                raise ValueError("Missing title parameter")
+            
+            title = arguments["title"]
+            content = notes_manager.get_note_content(title)
+            
+            if content:
+                return [types.TextContent(type="text", text=f"**{title}**\n\n{content}")]
+            else:
+                return [types.TextContent(type="text", text="Note not found")]
+
+        elif name == "notes-list":
+            notes = notes_manager.list_all_notes()
+            
+            if notes:
+                note_list = [f"• {note.title}" for note in notes]
+                message = f"Found {len(notes)} notes:\n" + "\n".join(note_list)
+            else:
+                message = "No notes found"
+            
+            return [types.TextContent(type="text", text=message)]
+
+        elif name == "notes-open":
+            if not arguments or "title" not in arguments:
+                raise ValueError("Missing title parameter")
+            
+            title = arguments["title"]
+            success = notes_manager.open_note(title)
+            
+            if success:
+                return [types.TextContent(type="text", text=f"✅ Note opened successfully: \"{title}\"")]
+            else:
+                return [types.TextContent(type="text", text=f"Failed to open note: \"{title}\". Note may not exist.")]
+
+        elif name == "notes-delete":
+            if not arguments or "title" not in arguments:
+                raise ValueError("Missing title parameter")
+            
+            title = arguments["title"]
+            success = notes_manager.delete_note(title)
+            
+            if success:
+                return [types.TextContent(type="text", text=f"✅ Note deleted successfully: \"{title}\"")]
+            else:
+                return [types.TextContent(type="text", text=f"Failed to delete note: \"{title}\". Note may not exist.")]
 
         else:
             raise ValueError(f"Unknown tool: {name}")

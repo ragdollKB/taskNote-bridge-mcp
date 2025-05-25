@@ -453,5 +453,115 @@ def get_tools_list() -> list[types.Tool]:
                 },
                 "required": ["query"]
             }
+        ),
+
+        types.Tool(
+            name="open-todo",
+            description="Search for a todo by title and open it in Things app",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "description": "Title or partial title of the todo to search for and open"
+                    }
+                },
+                "required": ["title"]
+            }
+        ),
+
+        # Apple Notes tools
+        types.Tool(
+            name="notes-create",
+            description="Create a new note in Apple Notes",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "description": "The title of the note"
+                    },
+                    "content": {
+                        "type": "string",
+                        "description": "The content of the note"
+                    },
+                    "tags": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                        "description": "Optional tags for the note"
+                    }
+                },
+                "required": ["title", "content"]
+            }
+        ),
+
+        types.Tool(
+            name="notes-search",
+            description="Search for notes by title in Apple Notes",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "query": {
+                        "type": "string",
+                        "description": "The search query"
+                    }
+                },
+                "required": ["query"]
+            }
+        ),
+
+        types.Tool(
+            name="notes-get-content",
+            description="Get the content of a specific note from Apple Notes",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "description": "The exact title of the note"
+                    }
+                },
+                "required": ["title"]
+            }
+        ),
+
+        types.Tool(
+            name="notes-list",
+            description="List all notes in Apple Notes",
+            inputSchema={
+                "type": "object",
+                "properties": {},
+                "required": []
+            }
+        ),
+
+        types.Tool(
+            name="notes-open",
+            description="Open a note in Apple Notes app",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "description": "The exact title of the note to open"
+                    }
+                },
+                "required": ["title"]
+            }
+        ),
+
+        types.Tool(
+            name="notes-delete",
+            description="Delete a note from Apple Notes",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "description": "The exact title of the note to delete"
+                    }
+                },
+                "required": ["title"]
+            }
         )
     ]

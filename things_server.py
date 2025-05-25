@@ -13,18 +13,18 @@ from handlers import handle_tool_call
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
-server = Server("things")
+server = Server("tasknote-bridge")
 
 @server.list_tools()
 async def handle_list_tools() -> list[types.Tool]:
-    """List available tools for Things integration."""
+    """List available tools for TaskNote Bridge integration."""
     return get_tools_list()
 
 @server.call_tool()
 async def handle_call_tool(
     name: str, arguments: dict | None
 ) -> list[types.TextContent | types.ImageContent | types.EmbeddedResource]:
-    """Handle tool execution requests."""
+    """Handle tool execution requests for TaskNote Bridge."""
     return await handle_tool_call(name, arguments)
 
 async def main():
@@ -34,7 +34,7 @@ async def main():
             read_stream,
             write_stream,
             InitializationOptions(
-                server_name="things",
+                server_name="tasknote-bridge",
                 server_version="0.1.0",
                 capabilities=server.get_capabilities(
                     notification_options=NotificationOptions(),
