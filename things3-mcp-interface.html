@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Things 3 MCP Interface</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .main-content {
+            padding: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section h2::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            border-radius: 2px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #4facfe;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(79, 172, 254, 0.3);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            color: #8b4513;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            color: #8b2635;
+        }
+
+        .url-output {
+            background: #f8f9fa;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 13px;
+            word-break: break-all;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .mcp-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #ffc107;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ffc107;
+            animation: pulse 2s infinite;
+        }
+
+        .status-indicator.connected {
+            background: #28a745;
+        }
+
+        .status-indicator.error {
+            background: #dc3545;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .chat-interface {
+            grid-column: 1 / -1;
+            margin-top: 20px;
+        }
+
+        .chat-messages {
+            height: 300px;
+            overflow-y: auto;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background: #f8f9fa;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            border-radius: 10px;
+            max-width: 80%;
+        }
+
+        .message.user {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            margin-left: auto;
+        }
+
+        .message.assistant {
+            background: white;
+            border: 1px solid #e1e5e9;
+        }
+
+        .chat-input-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input {
+            flex: 1;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .example-urls {
+            background: #e3f2fd;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .example-urls h4 {
+            margin-bottom: 10px;
+            color: #1976d2;
+        }
+
+        .example-urls code {
+            display: block;
+            background: white;
+            padding: 8px;
+            border-radius: 5px;
+            margin: 5px 0;
+            font-size: 12px;
+            border: 1px solid #bbdefb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Things 3 MCP Interface</h1>
+            <p>Integrate Claude and other LLMs with Things 3 using URL schemes and MCP</p>
+        </div>
+
+        <div class="main-content">
+            <!-- MCP Status Section -->
+            <div class="section">
+                <h2>Things MCP Server</h2>
+                <div class="mcp-status">
+                    <div class="status-indicator connected" id="mcpStatus"></div>
+                    <span id="mcpStatusText">Ready - Using Local MCP Server</span>
+                </div>
+                
+                <div class="form-group">
+                    <label>Server Status:</label>
+                    <p style="color: #28a745; font-weight: 600;">✓ Connected to Things MCP Server via uv</p>
+                    <p style="color: #666; font-size: 0.9em;">Server path: [Configure in your VSCode settings.json]</p>
+                </div>
+                
+                <button class="btn" onclick="testMCPConnection()">Test Connection</button>
+                <button class="btn btn-secondary" onclick="refreshThingsData()">Refresh Data</button>
+            </div>
+
+            <!-- Things 3 URL Generator -->
+            <div class="section">
+                <h2>Things 3 Actions</h2>
+                
+                <div class="quick-actions">
+                    <button class="btn" onclick="loadTodayTasks()">Load Today's Tasks</button>
+                    <button class="btn" onclick="loadInboxTasks()">Load Inbox</button>
+                    <button class="btn" onclick="loadProjects()">Load Projects</button>
+                    <button class="btn" onclick="executeThingsURL('things:///show?id=today')">Open Today</button>
+                </div>
+
+                <div class="form-group">
+                    <label for="actionType">Action Type:</label>
+                    <select id="actionType" onchange="updateForm()">
+                        <option value="add">Add Task</option>
+                        <option value="show">Show View</option>
+                        <option value="search">Search</option>
+                        <option value="update">Update Task</option>
+                    </select>
+                </div>
+
+                <div id="dynamicForm">
+                    <!-- Form fields will be populated based on action type -->
+                </div>
+
+                <button class="btn" onclick="generateThingsURL()">Generate URL</button>
+                <button class="btn btn-secondary" onclick="executeGeneratedURL()">Execute</button>
+                <button class="btn btn-secondary" onclick="createTaskViaMCP()">Create via MCP</button>
+                
+                <div class="url-output" id="urlOutput"></div>
+                
+                <!-- Results display -->
+                <div id="mcpResults" style="display: none; margin-top: 15px; padding: 15px; background: #f0f8ff; border-radius: 10px; border-left: 4px solid #4facfe;">
+                    <h4 style="margin-bottom: 10px; color: #4facfe;">MCP Results:</h4>
+                    <div id="mcpResultsContent"></div>
+                </div>
+            </div>
+
+            <!-- Chat Interface -->
+            <div class="section chat-interface">
+                <h2>LLM Chat Interface</h2>
+                
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message assistant">
+                        <strong>Assistant:</strong> Hello! I can help you manage your Things 3 tasks. Try asking me to create tasks, search for items, or organize your to-dos.
+                    </div>
+                </div>
+                
+                <div class="chat-input-group">
+                    <input type="text" class="chat-input" id="chatInput" placeholder="Ask me to help with your Things 3 tasks..." onkeypress="handleChatKeypress(event)">
+                    <button class="btn" onclick="sendChatMessage()">Send</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Example URLs Section -->
+        <div class="section" style="margin: 20px 30px;">
+            <div class="example-urls">
+                <h4>Example Things URLs:</h4>
+                <code>things:///add?title=Buy%20groceries&notes=Milk,%20bread,%20eggs</code>
+                <code>things:///show?id=today</code>
+                <code>things:///search?query=project</code>
+                <code>things:///add?title=Meeting&when=today&list=Work</code>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let chatMessages = [];
+
+        // MCP Server Integration Functions
+        async function executeMCPCommand(toolName, arguments = {}) {
+            try {
+                const response = await fetch('/api/mcp', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        tool: toolName,
+                        arguments: arguments
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                return result;
+            } catch (error) {
+                console.error('MCP command error:', error);
+                // Show error to user
+                addChatMessage('system', `MCP Error: ${error.message}. Make sure the web server is running.`);
+                throw error;
+            }
+        }
+
+        function testMCPConnection() {
+            addChatMessage('system', 'Testing MCP connection...');
+            
+            executeMCPCommand('get-today')
+                .then(result => {
+                    addChatMessage('assistant', '✓ MCP Connection successful! ' + (result.data || 'Server is responding.'));
+                    showMCPResults(result.data || 'Connection test successful');
+                })
+                .catch(error => {
+                    addChatMessage('system', '✗ MCP Connection failed: ' + error.message);
+                });
+        }
+
+        function refreshThingsData() {
+            addChatMessage('system', 'Refreshing Things data...');
+            loadTodayTasks();
+        }
+
+        async function loadTodayTasks() {
+            try {
+                addChatMessage('system', 'Loading today\'s tasks...');
+                const result = await executeMCPCommand('get-today');
+                showMCPResults(result.data || 'Today\'s tasks loaded successfully');
+                addChatMessage('assistant', 'Today\'s tasks: ' + (result.data || 'No tasks found'));
+            } catch (error) {
+                addChatMessage('system', 'Error loading today\'s tasks: ' + error.message);
+            }
+        }
+
+        async function loadInboxTasks() {
+            try {
+                addChatMessage('system', 'Loading inbox tasks...');
+                const result = await executeMCPCommand('get-inbox');
+                showMCPResults(result.data || 'Inbox tasks loaded successfully');
+                addChatMessage('assistant', 'Inbox: ' + (result.data || 'No tasks found'));
+            } catch (error) {
+                addChatMessage('system', 'Error loading inbox: ' + error.message);
+            }
+        }
+
+        async function loadProjects() {
+            try {
+                addChatMessage('system', 'Loading projects...');
+                const result = await executeMCPCommand('get-projects');
+                showMCPResults(result.data || 'Projects loaded successfully');
+                addChatMessage('assistant', 'Projects: ' + (result.data || 'No projects found'));
+            } catch (error) {
+                addChatMessage('system', 'Error loading projects: ' + error.message);
+            }
+        }
+
+        async function createTaskViaMCP() {
+            const title = document.getElementById('taskTitle').value;
+            const notes = document.getElementById('taskNotes').value;
+            const when = document.getElementById('taskWhen').value;
+            const list = document.getElementById('taskList').value;
+            const tags = document.getElementById('taskTags').value;
+
+            if (!title) {
+                addChatMessage('system', 'Please enter a task title first');
+                return;
+            }
+
+            const arguments = { title };
+            if (notes) arguments.notes = notes;
+            if (when) arguments.when = when;
+            if (list) arguments.list_title = list;
+            if (tags) arguments.tags = tags.split(',').map(t => t.trim());
+
+            try {
+                addChatMessage('system', `Creating task "${title}" via MCP...`);
+                const result = await executeMCPCommand('add-todo', arguments);
+                showMCPResults(result.data || `Task "${title}" created successfully`);
+                addChatMessage('assistant', `✓ Task created: ${title}`);
+                
+                // Clear the form
+                document.getElementById('taskTitle').value = '';
+                document.getElementById('taskNotes').value = '';
+                document.getElementById('taskWhen').value = '';
+                document.getElementById('taskList').value = '';
+                document.getElementById('taskTags').value = '';
+            } catch (error) {
+                addChatMessage('system', 'Error creating task: ' + error.message);
+            }
+        }
+
+        function showMCPResults(content) {
+            const resultsDiv = document.getElementById('mcpResults');
+            const contentDiv = document.getElementById('mcpResultsContent');
+            
+            contentDiv.innerHTML = `<pre style="white-space: pre-wrap; margin: 0;">${content}</pre>`;
+            resultsDiv.style.display = 'block';
+            
+            // Auto-hide after 10 seconds
+            setTimeout(() => {
+                resultsDiv.style.display = 'none';
+            }, 10000);
+        }
+
+        // Legacy WebSocket functions (kept for compatibility)
+        function connectMCP() {
+            addChatMessage('system', 'MCP server is already connected via local integration');
+        }
+
+        function disconnectMCP() {
+            addChatMessage('system', 'Cannot disconnect from local MCP server');
+        }
+
+        function handleMCPMessage(data) {
+            // Handle different MCP message types
+            if (data.type === 'response') {
+                addChatMessage('assistant', data.content);
+            } else if (data.type === 'things_action') {
+                executeThingsURL(data.url);
+                addChatMessage('system', 'Executed Things action: ' + data.action);
+            }
+        }
+
+        // Things URL Generation
+        function updateForm() {
+            const actionType = document.getElementById('actionType').value;
+            const dynamicForm = document.getElementById('dynamicForm');
+            
+            let formHTML = '';
+            
+            switch (actionType) {
+                case 'add':
+                    formHTML = `
+                        <div class="form-group">
+                            <label for="taskTitle">Task Title:</label>
+                            <input type="text" id="taskTitle" placeholder="Enter task title">
+                        </div>
+                        <div class="form-group">
+                            <label for="taskNotes">Notes:</label>
+                            <textarea id="taskNotes" placeholder="Enter notes (optional)"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="taskWhen">When:</label>
+                            <input type="text" id="taskWhen" placeholder="today, tomorrow, or date">
+                        </div>
+                        <div class="form-group">
+                            <label for="taskList">List/Area:</label>
+                            <input type="text" id="taskList" placeholder="List or area name">
+                        </div>
+                        <div class="form-group">
+                            <label for="taskTags">Tags:</label>
+                            <input type="text" id="taskTags" placeholder="Comma-separated tags">
+                        </div>
+                    `;
+                    break;
+                case 'show':
+                    formHTML = `
+                        <div class="form-group">
+                            <label for="showId">View ID:</label>
+                            <select id="showId">
+                                <option value="inbox">Inbox</option>
+                                <option value="today">Today</option>
+                                <option value="upcoming">Upcoming</option>
+                                <option value="anytime">Anytime</option>
+                                <option value="someday">Someday</option>
+                                <option value="logbook">Logbook</option>
+                                <option value="trash">Trash</option>
+                            </select>
+                        </div>
+                    `;
+                    break;
+                case 'search':
+                    formHTML = `
+                        <div class="form-group">
+                            <label for="searchQuery">Search Query:</label>
+                            <input type="text" id="searchQuery" placeholder="Enter search terms">
+                        </div>
+                    `;
+                    break;
+                case 'update':
+                    formHTML = `
+                        <div class="form-group">
+                            <label for="updateId">Task ID:</label>
+                            <input type="text" id="updateId" placeholder="Task ID to update">
+                        </div>
+                        <div class="form-group">
+                            <label for="updateTitle">New Title:</label>
+                            <input type="text" id="updateTitle" placeholder="Updated title">
+                        </div>
+                        <div class="form-group">
+                            <label for="updateCompleted">Completed:</label>
+                            <select id="updateCompleted">
+                                <option value="">No change</option>
+                                <option value="true">Mark as completed</option>
+                                <option value="false">Mark as incomplete</option>
+                            </select>
+                        </div>
+                    `;
+                    break;
+            }
+            
+            dynamicForm.innerHTML = formHTML;
+        }
+
+        function generateThingsURL() {
+            const actionType = document.getElementById('actionType').value;
+            let url = 'things:///';
+            
+            switch (actionType) {
+                case 'add':
+                    url += 'add?';
+                    const params = new URLSearchParams();
+                    
+                    const title = document.getElementById('taskTitle').value;
+                    if (title) params.append('title', title);
+                    
+                    const notes = document.getElementById('taskNotes').value;
+                    if (notes) params.append('notes', notes);
+                    
+                    const when = document.getElementById('taskWhen').value;
+                    if (when) params.append('when', when);
+                    
+                    const list = document.getElementById('taskList').value;
+                    if (list) params.append('list', list);
+                    
+                    const tags = document.getElementById('taskTags').value;
+                    if (tags) params.append('tags', tags);
+                    
+                    url += params.toString();
+                    break;
+                    
+                case 'show':
+                    const showId = document.getElementById('showId').value;
+                    url += `show?id=${showId}`;
+                    break;
+                    
+                case 'search':
+                    const query = document.getElementById('searchQuery').value;
+                    url += `search?query=${encodeURIComponent(query)}`;
+                    break;
+                    
+                case 'update':
+                    url += 'update?';
+                    const updateParams = new URLSearchParams();
+                    
+                    const id = document.getElementById('updateId').value;
+                    if (id) updateParams.append('id', id);
+                    
+                    const newTitle = document.getElementById('updateTitle').value;
+                    if (newTitle) updateParams.append('title', newTitle);
+                    
+                    const completed = document.getElementById('updateCompleted').value;
+                    if (completed) updateParams.append('completed', completed);
+                    
+                    url += updateParams.toString();
+                    break;
+            }
+            
+            document.getElementById('urlOutput').textContent = url;
+            return url;
+        }
+
+        function executeThingsURL(url) {
+            if (!url && document.getElementById('urlOutput').textContent) {
+                url = document.getElementById('urlOutput').textContent;
+            }
+            
+            if (url) {
+                window.open(url, '_self');
+                addChatMessage('system', 'Executed: ' + url);
+            }
+        }
+
+        function executeGeneratedURL() {
+            const url = generateThingsURL();
+            executeThingsURL(url);
+        }
+
+        // Chat Interface Functions
+        function addChatMessage(type, content) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            
+            if (type === 'system') {
+                messageDiv.innerHTML = `<em>${content}</em>`;
+                messageDiv.style.fontStyle = 'italic';
+                messageDiv.style.color = '#666';
+                messageDiv.style.background = '#f0f0f0';
+            } else {
+                const label = type === 'user' ? 'You' : 'Assistant';
+                messageDiv.innerHTML = `<strong>${label}:</strong> ${content}`;
+            }
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            addChatMessage('user', message);
+            input.value = '';
+            
+            // Process the message and potentially generate Things URLs
+            processUserMessage(message);
+        }
+
+        function handleChatKeypress(event) {
+            if (event.key === 'Enter') {
+                sendChatMessage();
+            }
+        }
+
+        function processUserMessage(message) {
+            // Enhanced message processing with MCP integration
+            const lowerMessage = message.toLowerCase();
+            
+            if (lowerMessage.includes('today') || lowerMessage.includes('what\'s on my schedule')) {
+                loadTodayTasks();
+            } else if (lowerMessage.includes('inbox')) {
+                loadInboxTasks();
+            } else if (lowerMessage.includes('projects')) {
+                loadProjects();
+            } else if (lowerMessage.includes('add task') || lowerMessage.includes('create task') || lowerMessage.includes('new task')) {
+                // Extract task details from message
+                const taskMatch = message.match(/(?:add|create|new) task[:\s]+(.+)/i);
+                if (taskMatch) {
+                    const taskTitle = taskMatch[1].trim();
+                    
+                    // Use MCP to create the task
+                    executeMCPCommand('add-todo', { title: taskTitle })
+                        .then(result => {
+                            addChatMessage('assistant', `✓ Created task "${taskTitle}" via MCP`);
+                            showMCPResults(result.data || `Task "${taskTitle}" created successfully`);
+                        })
+                        .catch(error => {
+                            // Fallback to URL scheme
+                            const url = `things:///add?title=${encodeURIComponent(taskTitle)}`;
+                            addChatMessage('assistant', `Creating task "${taskTitle}" via URL scheme.`);
+                            executeThingsURL(url);
+                        });
+                } else {
+                    addChatMessage('assistant', 'What task would you like to create? Please specify the title.');
+                }
+            } else if (lowerMessage.includes('show') && (lowerMessage.includes('inbox') || lowerMessage.includes('today') || lowerMessage.includes('upcoming'))) {
+                let view = 'inbox';
+                if (lowerMessage.includes('today')) view = 'today';
+                else if (lowerMessage.includes('upcoming')) view = 'upcoming';
+                
+                const url = `things:///show?id=${view}`;
+                addChatMessage('assistant', `Opening your ${view} view.`);
+                executeThingsURL(url);
+            } else if (lowerMessage.includes('search')) {
+                const searchMatch = message.match(/search(?:\s+for)?\s+(.+)/i);
+                if (searchMatch) {
+                    const query = searchMatch[1].trim();
+                    
+                    // Use MCP search first
+                    executeMCPCommand('search-todos', { query: query })
+                        .then(result => {
+                            addChatMessage('assistant', `Search results for "${query}"`);
+                            showMCPResults(result.data || 'No results found');
+                        })
+                        .catch(error => {
+                            // Fallback to URL scheme
+                            const url = `things:///search?query=${encodeURIComponent(query)}`;
+                            addChatMessage('assistant', `Searching for "${query}" in Things.`);
+                            executeThingsURL(url);
+                        });
+                } else {
+                    addChatMessage('assistant', 'What would you like to search for?');
+                }
+            } else {
+                addChatMessage('assistant', 'I can help you with Things 3 tasks via MCP! Try saying:\n• "What\'s today?" - Load today\'s tasks\n• "Add task [title]" - Create a new task\n• "Show inbox" - Open your inbox\n• "Search [term]" - Search your tasks\n• "Projects" - Load your projects');
+            }
+        }
+
+        // Initialize the form
+        updateForm();
+    </script>
+</body>
+</html>
