@@ -18,7 +18,7 @@ MCP_HOST=${MCP_HOST:-localhost}
 # We won't try to start it from here, the app must be running independently.
 if ! nc -z $MCP_HOST $MCP_PORT > /dev/null 2>&1; then
     echo "Error: Swift MCP server does not appear to be running or accessible on $MCP_HOST:$MCP_PORT." >&2
-    echo "Please ensure the 'Things MCP' macOS application is running and the MCP server is enabled within it." >&2
+    echo "Please ensure the 'TaskNote Bridge' macOS application is running and the MCP server is enabled within it." >&2
     exit 1
 fi
 

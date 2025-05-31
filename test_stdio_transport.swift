@@ -14,7 +14,7 @@ func testStdioTransport() {
     let process = Process()
     
     // Path to the built Swift app
-    let appPath = "/Users/kb/things3-mcp-server/things-mcp/build/Debug/Things MCP.app/Contents/MacOS/Things MCP"
+    let appPath = "/Users/kb/things3-mcp-server/things-mcp/build/Debug/TaskNote Bridge.app/Contents/MacOS/TaskNote Bridge"
     
     process.executableURL = URL(fileURLWithPath: appPath)
     process.arguments = ["--stdio"] // Tell our app to use stdio mode
@@ -77,11 +77,11 @@ func testStdioTransport() {
 }
 
 // Check if the app exists first
-let appPath = "/Users/kb/things3-mcp-server/things-mcp/build/Debug/Things MCP.app/Contents/MacOS/Things MCP"
+let appPath = "/Users/kb/things3-mcp-server/things-mcp/build/Debug/TaskNote Bridge.app/Contents/MacOS/TaskNote Bridge"
 if FileManager.default.fileExists(atPath: appPath) {
     print("Found Swift MCP app at: \(appPath)")
     testStdioTransport()
 } else {
     print("Swift MCP app not found at: \(appPath)")
-    print("Make sure to build the project first with: xcodebuild -project 'Things MCP.xcodeproj' -scheme 'Things MCP' build")
+    print("Make sure to build the project first with: xcodebuild -project 'TaskNote Bridge.xcodeproj' -scheme 'TaskNote Bridge' build")
 }

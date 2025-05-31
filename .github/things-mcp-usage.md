@@ -1,7 +1,7 @@
-# Things MCP Server Usage
+# TaskNote Bridge MCP Server Usage
 
 ## Context
-You are working with a Things MCP (Model Context Protocol) server that integrates with the Things 3 task management app and Apple Notes. When users request task/project creation or note management, you should use the available MCP tools.
+You are working with a TaskNote Bridge MCP (Model Context Protocol) server that integrates with the Things 3 task management app and Apple Notes. When users request task/project creation or note management, you should use the available MCP tools.
 
 ## Available MCP Tools
 

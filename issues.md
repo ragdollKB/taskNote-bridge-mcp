@@ -118,7 +118,7 @@ echo '{"jsonrpc":"2.0","id":1,"method":"tools/list"}' | ./launch_swift_mcp_stdio
 ## Issue 1: Build Failure - Missing Python Resource Files (May 27, 2025)
 
 **Status:** UNRESOLVED  
-**Build Command:** `xcodebuild -project "/Users/kb/things3-mcp-server/things-mcp/Things MCP.xcodeproj" -scheme "Things MCP" clean build`
+**Build Command:** `xcodebuild -project "/Users/kb/things3-mcp-server/things-mcp/TaskNote Bridge.xcodeproj" -scheme "TaskNote Bridge" clean build`
 
 **Error:** Build fails with 8 failures due to missing Python resource files:
 - `url_scheme.py`
@@ -129,7 +129,7 @@ echo '{"jsonrpc":"2.0","id":1,"method":"tools/list"}' | ./launch_swift_mcp_stdio
 - `apple_notes.py`
 - `handlers.py`
 
-**Root Cause:** Xcode project is configured to copy Python files from `Things MCP/Resources/` directory, but these files don't exist. They seem to be remnants from a previous Python-based implementation.
+**Root Cause:** Xcode project is configured to copy Python files from `TaskNote Bridge/Resources/` directory, but these files don't exist. They seem to be remnants from a previous Python-based implementation.
 
 **Impact:** Complete build failure, preventing compilation of Swift code.
 
@@ -139,7 +139,7 @@ echo '{"jsonrpc":"2.0","id":1,"method":"tools/list"}' | ./launch_swift_mcp_stdio
 3. Complete HTTP server removal
 
 **File Locations:**
-- Missing files expected in: `/Users/kb/things3-mcp-server/things-mcp/Things MCP/Resources/`
+- Missing files expected in: `/Users/kb/things3-mcp-server/things-mcp/TaskNote Bridge/Resources/`
 - Backup copies exist in: `/Users/kb/things3-mcp-server/things-mcp/python-backup/`
 
 ---
@@ -163,7 +163,7 @@ echo '{"jsonrpc":"2.0","id":1,"method":"tools/list"}' | ./launch_swift_mcp_stdio
 
 ### Build Results (December 24, 2024 4:20 PM)
 ```
-SwiftCompile normal arm64 Compiling\ SwiftMCPServer.swift /Users/kb/things3-mcp-server/things-mcp/Things\ MCP/SwiftMCPServer.swift (in target 'Things MCP' from project 'Things MCP')
+SwiftCompile normal arm64 Compiling\ SwiftMCPServer.swift /Users/kb/things3-mcp-server/things-mcp/TaskNote\ Bridge/SwiftMCPServer.swift (in target 'TaskNote Bridge' from project 'TaskNote Bridge')
 
 Error Examples:
 - error: invalid redeclaration of 'LogLevel'
@@ -188,7 +188,7 @@ Error Examples:
 ---
 
 ## Build #10 - 2025-05-28 08:10:49 - ✅ SUCCESS: stdio Transport Addition
-**Command:** `xcodebuild -project "Things MCP.xcodeproj" -scheme "Things MCP" clean build`
+**Command:** `xcodebuild -project "TaskNote Bridge.xcodeproj" -scheme "TaskNote Bridge" clean build`
 
 ### ✅ SUCCESS: stdio Transport Support Added Successfully
 
@@ -266,3 +266,112 @@ Error Examples:
 - ✅ **Transport foundation intact:** TCP and stdio transport still working correctly
 
 **Current State:** The project now has a clean, simplified codebase with complete dual transport support (TCP for Claude Desktop, stdio for VS Code) and no HTTP server complexity. Ready for VS Code configuration updates and Python bridge removal.
+
+---
+
+## ✅ RESOLVED: App Renaming - "Things MCP" to "TaskNote Bridge" (May 30, 2025)
+
+**Issue:** Complete renaming of the macOS app from "Things MCP" to "TaskNote Bridge" to better reflect its dual functionality as a bridge between task management (Things 3) and note-taking (Apple Notes).
+
+**Build Command:** `xcodebuild -project "/Users/kb/things3-mcp-server/things-mcp/TaskNote Bridge.xcodeproj" -scheme "TaskNote Bridge" clean build`
+
+**Resolution Status:** ✅ COMPLETED
+
+**Changes Made:**
+1. **Project Structure:**
+   - Renamed `Things MCP.xcodeproj` → `TaskNote Bridge.xcodeproj`
+   - Renamed `Things MCP/` source directory → `TaskNote Bridge/`
+   - Renamed `Things MCP.app` → `TaskNote Bridge.app`
+
+2. **Xcode Configuration:**
+   - Updated project.pbxproj with new product name and bundle identifier
+   - Changed bundle identifier: `com.yourname.thingsmcp` → `com.yourname.tasknotebridge`
+   - Updated all target names and build configurations
+   - Modified xcscheme references
+
+3. **Source Code Updates:**
+   - Updated server name in SwiftMCPServer.swift: "Things MCP Server" → "TaskNote Bridge Server"
+   - Updated UI text in ContentView.swift
+   - Updated minimal server implementation
+
+4. **Documentation & Scripts:**
+   - Updated README.md with new app name and build commands
+   - Updated CHANGELOG.md
+   - Modified install.sh script with new app paths
+   - Updated test scripts (test_tool_call.sh, test_stdio_transport.swift)
+   - Updated GitHub documentation files (.github/copilot-instructions.md, .github/things-mcp-usage.md)
+
+5. **Build System:**
+   - Successfully compiled with new module name `TaskNote_Bridge`
+   - App bundle registered with Launch Services under new name
+   - All derived data generated correctly in `TaskNote_Bridge-*` directories
+
+**Build Result:** ✅ BUILD SUCCEEDED
+- No compilation errors
+- Only minor warnings (unused variables, unreachable catch blocks)
+- Code signing successful
+- App registered with macOS Launch Services
+
+**Final Status:** The app has been completely renamed from "Things MCP" to "TaskNote Bridge" with all references updated throughout the codebase, documentation, and build system. The renaming better reflects the app's purpose as a bridge between task management and note-taking systems via MCP protocol.
+
+---
+
+## COMPLETED: RELEASE_CHECKLIST.md Review and Update ✅
+**Date**: December 2024  
+**Status**: RESOLVED ✅
+
+### Issue Summary:
+Reviewed and updated RELEASE_CHECKLIST.md to ensure accuracy after the project renaming to "TaskNote Bridge".
+
+### Updates Made:
+1. ✅ **Repository References**: Updated GitHub repository name suggestion to `taskNote-bridge-mcp`
+2. ✅ **Dual Functionality**: Added note about Things 3 + Apple Notes integration
+3. ✅ **macOS App Section**: Added new checklist section for Swift app renaming completion
+4. ✅ **Build Process**: Added TaskNote Bridge.app build step to publication checklist
+5. ✅ **Installation Flow**: Added optional GUI app building step for users
+
+### Key Changes:
+- GitHub repo: `things-mcp` → `taskNote-bridge-mcp`
+- Added macOS app build verification to final steps
+- Documented dual functionality (task + note management bridge)
+- Included Swift MCP server implementation completion
+
+**Result:** RELEASE_CHECKLIST.md now accurately reflects the renamed project and complete feature set, ready for public release preparation.
+
+---
+
+## COMPLETED: VSCODE_MCP_SETUP.md Update and install.sh Removal ✅
+**Date**: May 30, 2025  
+**Status**: RESOLVED ✅
+
+### Issue Summary:
+Updated VSCODE_MCP_SETUP.md to reflect TaskNote Bridge branding and removed install.sh script since users can install macOS apps manually.
+
+### Changes Made:
+
+#### VSCODE_MCP_SETUP.md Updates:
+1. ✅ **Title**: Changed from "Things 3 Swift Server" to "TaskNote Bridge"
+2. ✅ **Prerequisites**: Added Apple Notes requirement alongside Things 3
+3. ✅ **Configuration**: Updated server name from "things-swift" to "taskNote-bridge"
+4. ✅ **Paths**: Removed hardcoded personal paths, use generic `/path/to/your/project/`
+5. ✅ **Tools Documentation**: Added comprehensive tool listings for both Things 3 and Apple Notes
+6. ✅ **Testing**: Added Apple Notes testing examples
+7. ✅ **Troubleshooting**: Added Apple Notes verification steps
+8. ✅ **Features**: Updated to reflect dual platform support
+9. ✅ **Development**: Updated logging subsystem name
+
+#### Tool Categories Added:
+- **Things 3 Tools**: bb7_add-todo, bb7_add-project, bb7_search-todos
+- **Apple Notes Tools**: bb7_notes-create, bb7_notes-search, bb7_notes-list
+- **Enhanced Parameters**: Added deadline, tags, when scheduling for Things 3 tools
+
+#### install.sh Removal:
+- ✅ **File Deleted**: Removed install.sh as users can drag-drop macOS apps to Applications
+- ✅ **Simplified Setup**: Users now handle app installation manually (standard macOS practice)
+
+### Result:
+- Clean, user-friendly VS Code setup guide
+- Comprehensive tool documentation
+- Generic paths for better usability
+- Reflects complete TaskNote Bridge functionality
+- Simplified installation process without unnecessary scripts

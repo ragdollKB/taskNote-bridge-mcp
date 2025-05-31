@@ -59,3 +59,7 @@ settings.json
 
 # Keep the GitHub folder for Copilot instructions
 # .github/
+
+# Documents
+RELEASE_CHECKLIST.md
+issues.md

@@ -2,7 +2,7 @@
 
 # Test script to manually test tool call and capture errors
 
-APP_PATH="/Users/kb/things3-mcp-server/things-mcp/build/Debug/Things MCP.app/Contents/MacOS/Things MCP"
+APP_PATH="/Users/kb/things3-mcp-server/things-mcp/build/Debug/TaskNote Bridge.app/Contents/MacOS/TaskNote Bridge"
 
 if [ ! -f "$APP_PATH" ]; then
     echo "App not found at: $APP_PATH"

@@ -3,104 +3,26 @@
 <plist version="1.0">
 <dict>
 	<key>files</key>
-	<dict>
-		<key>Resources/apple_notes.py</key>
-		<data>
-		ttSI6DuJJs/yM5Pqj6d4m8LFqnQ=
-		</data>
-		<key>Resources/apple_notes_tools.py</key>
-		<data>
-		x3MWVu5MtJHpMgPUUoRYOiYY3DY=
-		</data>
-		<key>Resources/formatters.py</key>
-		<data>
-		WvqiUHIQpEtSAVXatE9CaxjLysA=
-		</data>
-		<key>Resources/handlers.py</key>
-		<data>
-		dTZLYF02naOi+T0e83TzPRSLG9g=
-		</data>
-		<key>Resources/things_server.py</key>
-		<data>
-		qOhETwyRVdPAi2GiRiZZB7NIKok=
-		</data>
-		<key>Resources/tools.py</key>
-		<data>
-		AwZJtB4/SW8PYQ57MtC7HAbdws0=
-		</data>
-		<key>Resources/url_scheme.py</key>
-		<data>
-		ibd072ONf0McJ6Sm/QJswsr62iA=
-		</data>
-	</dict>
+	<dict/>
 	<key>files2</key>
 	<dict>
-		<key>MacOS/Things MCP.debug.dylib</key>
+		<key>MacOS/TaskNote Bridge.debug.dylib</key>
 		<dict>
 			<key>cdhash</key>
 			<data>
-			okLF5sHQ29uw5WcDvkJF2nQR1FY=
+			BzKHzN+N5NG5CbESeDoEppgbubg=
 			</data>
 			<key>requirement</key>
-			<string>cdhash H"a242c5e6c1d0dbdbb0e56703be4245da7411d456"</string>
+			<string>cdhash H"073287ccdf8de4d1b909b112783a04a6981bb9b8"</string>
 		</dict>
 		<key>MacOS/__preview.dylib</key>
 		<dict>
 			<key>cdhash</key>
 			<data>
-			gUt1MbDsQ6Q8cx6L7RsL5cOyRxw=
+			S1WVRn5mYstLjz9cYCs0v5ZE1Rg=
 			</data>
 			<key>requirement</key>
-			<string>cdhash H"814b7531b0ec43a43c731e8bed1b0be5c3b2471c"</string>
-		</dict>
-		<key>Resources/apple_notes.py</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			WnjEWa8d1ScjtkKa1URO5FdsY760s0jemxEuOmpCAPI=
-			</data>
-		</dict>
-		<key>Resources/apple_notes_tools.py</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			2FP9TRhYTR7ofSzYrfR5X6NpS51dwhdKFElNAcKxeBc=
-			</data>
-		</dict>
-		<key>Resources/formatters.py</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			EsDQ4FCMxVQnPLSE9Ad9HI35cO3MSEvNN4J5xBg4S+A=
-			</data>
-		</dict>
-		<key>Resources/handlers.py</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			ZeSyyo78H878pOQgjgX6+p0dpEALQB5TDTXE6MaVn+Q=
-			</data>
-		</dict>
-		<key>Resources/things_server.py</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			lF7/Ljr4MqTLXyOp5DgYOEmtTQiuP7Qo3cq6S6cTwcM=
-			</data>
-		</dict>
-		<key>Resources/tools.py</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			Dmae0vI+CJ71qZp+/NnM5AWftI9srEcRPfjZZojxLAw=
-			</data>
-		</dict>
-		<key>Resources/url_scheme.py</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			3UHJmgapwsIp2GqsBAgXTfghajdyfPH4RCM6WBfAd/s=
-			</data>
+			<string>cdhash H"4b5595467e6662cb4b8f3f5c602b34bf9644d518"</string>
 		</dict>
 	</dict>
 	<key>rules</key>

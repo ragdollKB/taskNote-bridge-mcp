@@ -1,7 +1,7 @@
 Remember here is how you do a build of the xcode project:
 
 xcodebuild -project "/Users/kb/things3-mcp-server/things-m
-cp/Things MCP.xcodeproj" -scheme "Things MCP" clean build
+cp/TaskNote Bridge.xcodeproj" -scheme "TaskNote Bridge" clean build
 
 
 Every time you do a build and it fails, track that in a md file called isses.md and update that when the error is resolved. 
@@ -14,7 +14,7 @@ This repository contains a macOS Swift application that implements a complete MC
 ## Project Structure
 
 ### macOS Swift MCP Server Application
-The Swift macOS app (`Things MCP.xcodeproj`) is a **complete MCP server application** that:
+The Swift macOS app (`TaskNote Bridge.xcodeproj`) is a **complete MCP server application** that:
 - **Implements a full MCP server in Swift** with Things 3 and Apple Notes tools
 - **Supports TCP transport protocol** for universal MCP client connections
 
@@ -29,7 +29,7 @@ The Swift macOS app (`Things MCP.xcodeproj`) is a **complete MCP server applicat
 - [MCP Protocol Specifications](./mcp-protocol-specs.md) - Detailed protocol specifications and technical implementation
 
 ### Project-Specific Usage
-- [Things MCP Server Usage](./things-mcp-usage.md) - Instructions for using the Swift MCP server tools
+- [TaskNote Bridge MCP Server Usage](./things-mcp-usage.md) - Instructions for using the Swift MCP server tools
 
 ## macOS App Purpose and Functionality
 

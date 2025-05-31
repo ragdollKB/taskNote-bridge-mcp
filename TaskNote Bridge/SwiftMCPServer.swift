@@ -300,7 +300,7 @@ class SwiftMCPServer: ObservableObject {
                     "resources": [:] as [String: Any]
                 ],
                 "serverInfo": [
-                    "name": "Things MCP Server",
+                    "name": "TaskNote Bridge Server",
                     "version": "1.0.0"
                 ]
             ]
