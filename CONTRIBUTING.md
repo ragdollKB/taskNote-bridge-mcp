@@ -1,6 +1,6 @@
-# Contributing to TaskNote Bridge
+# Contributing to Things MCP Server
 
-Thank you for your interest in contributing to TaskNote Bridge! This document provides guidelines for contributing to the project.
+Thank you for your interest in contributing to Things MCP Server! This document provides guidelines for contributing to the Swift macOS MCP server project.
 
 ## Development Setup
 
@@ -10,16 +10,14 @@ Thank you for your interest in contributing to TaskNote Bridge! This document pr
    cd things-mcp
    ```
 
-2. **Set up the development environment**:
+2. **Open the Xcode project**:
    ```bash
-   uv venv
-   uv pip install -e .
+   open "Things MCP.xcodeproj"
    ```
 
-3. **Run tests to ensure everything works**:
+3. **Build and test the app**:
    ```bash
-   uv run python test_server.py
-   uv run python test_apple_notes.py
+   xcodebuild -project "Things MCP.xcodeproj" -scheme "Things MCP" clean build
    ```
 
 ## Making Changes
@@ -29,11 +27,11 @@ Thank you for your interest in contributing to TaskNote Bridge! This document pr
    git checkout -b feature/your-feature-name
    ```
 
-2. **Make your changes** following the existing code style
+2. **Make your changes** following Swift best practices and the project coding guidelines
 
 3. **Test your changes**:
    ```bash
-   uv run python test_server.py
+   xcodebuild -project "Things MCP.xcodeproj" -scheme "Things MCP" clean build
    ```
 
 4. **Commit and push**:
@@ -47,7 +45,11 @@ Thank you for your interest in contributing to TaskNote Bridge! This document pr
 
 ## Code Style
 
-- Follow PEP 8 for Python code
+- Follow Swift API Design Guidelines
+- Use clear, descriptive naming conventions
+- Follow the project's existing code organization
+- Add documentation comments for public APIs
+- Use proper error handling with Swift's error system
 - Use descriptive variable and function names
 - Add docstrings to functions and classes
 - Keep functions focused and modular

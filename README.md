@@ -1,12 +1,60 @@
-# TaskNote Bridge - Things 3 + Apple Notes MCP Tool
+# Things MCP Server - Swift MCP Server with Things 3 & Apple Notes ✅
 
-TaskNote Bridge is a [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction) server that lets you use Claude Desktop and GitHub Copilot to interact with your task management data in [Things app](https://culturedcode.com/things) and [Apple Notes](https://support.apple.com/guide/notes/welcome/mac). You can ask AI assistants to create tasks, analyze projects, help manage priorities, take notes, and more.
+A native macOS Swift application that implements a complete [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction) server for Things 3 and Apple Notes integration. This project provides **TWO working MCP server implementations**:
 
-This server leverages the [Things.py](https://github.com/thingsapi/things.py) library, the [Things URL Scheme](https://culturedcode.com/things/help/url-scheme/), and AppleScript for Apple Notes integration. 
+1. **📱 macOS GUI App**: Complete server with monitoring interface
+2. **⚡ stdio MCP Server**: Lightweight server for VS Code integration
+
+**Status**: ✅ **PRODUCTION READY** - Both servers fully functional and tested with Things 3!
 
 <a href="https://glama.ai/mcp/servers/t9cgixg2ah"><img width="380" height="200" src="https://glama.ai/mcp/servers/t9cgixg2ah/badge" alt="Things Server MCP server" /></a>
 
-## Features
+## 🎯 **What Works Right Now**
+
+### ✅ **stdio MCP Server** (VS Code Ready)
+- **Status**: ✅ **FULLY WORKING** - Tasks successfully created in Things 3
+- **File**: `swift_mcp_stdio.swift` + `launch_swift_mcp_stdio.sh`
+- **Purpose**: Direct VS Code MCP extension integration
+- **Testing**: ✅ Verified task creation via Things 3 URL schemes
+- **Integration**: Ready for VS Code MCP extension (see `VSCODE_MCP_SETUP.md`)
+
+### ✅ **macOS GUI App** (Server Monitoring)
+- **Status**: ✅ **BUILT & RUNNING** - Auto-starts MCP server
+- **File**: `Things MCP.app` 
+- **Purpose**: Server monitoring interface + TCP transport  
+- **Features**: Real-time monitoring, log streaming, connection tracking
+- **Transport**: TCP on port 8000 for network clients
+
+## 🚀 **Quick Start**
+
+### For VS Code Integration (Recommended)
+```bash
+# Test the stdio server (creates task in Things 3!)
+echo '{"jsonrpc": "2.0", "id": 1, "method": "tools/call", "params": {"name": "bb7_add-todo", "arguments": {"title": "Hello from VS Code!", "tags": ["test"]}}}' | ./launch_swift_mcp_stdio.sh
+
+# Expected output:
+{"jsonrpc":"2.0","id":1,"result":{"content":[{"text":"✅ Task 'Hello from VS Code!' created in Things 3","type":"text"}],"isError":false}}
+
+# ✅ Check Things 3 - your task will be there!
+```
+
+### For GUI Monitoring
+```bash
+# Build and run the macOS app
+xcodebuild -project "Things MCP.xcodeproj" -scheme "Things MCP" build
+open "Things MCP.app"
+# Server auto-starts with monitoring interface
+```
+
+## 🛠 **Complete Feature Set**
+
+### Native macOS MCP Server Application
+- **Complete MCP Server**: Full Swift implementation of MCP protocol with Things 3 and Apple Notes tools
+- **Real-time Monitoring**: Server status dashboard with live activity tracking
+- **TCP Transport**: Network-based transport protocol for universal MCP client compatibility
+- **Log Streaming**: Live server logs with filtering and search capabilities
+- **Connection Management**: Monitor active client connections and request/response activity
+- **SwiftUI Interface**: Modern macOS interface for server monitoring and control
 
 ### Things 3 Integration
 - Access to all major Things lists (Inbox, Today, Upcoming, etc.)
@@ -29,154 +77,161 @@ This server leverages the [Things.py](https://github.com/thingsapi/things.py) li
 
 ## Installation
 
-### For Claude Desktop
+### Option 1: Download the App (Recommended)
+1. Download the latest `Things MCP.app` from the [Releases](https://github.com/yourusername/things-mcp/releases) page
+2. Use the included install script to move it to your Applications folder:
+   ```bash
+   ./install.sh
+   ```
+   This script will:
+   - Copy the app to your Applications folder
+   - Create necessary launcher scripts
+   - Provide configuration instructions for VS Code and Claude Desktop
+### Option 2: Build from Source
+If you prefer to build from source, you'll need:
+- Xcode 14.0 or newer
+- macOS 13.0 or newer
 
-1. Prerequisites 
-* Python 3.12+
-* Claude Desktop
+Clone the repository and build:
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/things-mcp.git
+cd things-mcp
+
+# Open in Xcode and build
+open "Things MCP.xcodeproj"
+```
+
+### Configuration
+
+#### Prerequisites
+* Any MCP-compatible AI assistant or tool (Claude Desktop, VS Code with MCP extensions, Cursor, Continue, Zed, etc.)
 * Things 3 ("Enable Things URLs" must be turned on in Settings -> General)
 * Apple Notes (for note management features)
-* macOS (required for AppleScript integration)
+* macOS 13.0 or newer (required for SwiftUI and AppleScript integration)
 
-2. Install uv if you haven't already:
-```bash
-curl -LsSf https://astral.sh/uv/install.sh | sh
-```
-Restart your terminal afterwards.
+#### For Any MCP Client
 
-3. Clone this repository:
-```bash
-git clone https://github.com/ragdollKB/things-mcp
-cd things-mcp
-```
+1. Launch the Things MCP app and start the TCP server (default port 8000)
 
-4. Install the required Python packages:
-```bash
-uv venv
-uv pip install -e .
-```
+2. Configure your MCP client to connect to `localhost:8000`
 
-5. Run the configuration setup script:
-```bash
-uv run python setup_config.py
-```
-This script will generate the correct configuration for your system and help you set it up automatically.
+**Examples:**
 
-Alternatively, you can manually edit the Claude Desktop configuration file:
-```bash
-code ~/Library/Application\ Support/Claude/claude_desktop_config.json
-```
-Add the Things server to the mcpServers key (replace `/PATH/TO/YOUR/things-mcp` with your actual installation path):
+**Claude Desktop:**
 ```json
 {
     "mcpServers": {
         "things": {
-            "command": "uv",
-            "args": [
-                "--directory",
-                "/PATH/TO/YOUR/things-mcp",
-                "run",
-                "things_server.py"
-            ]
+            "url": "tcp://localhost:8000"
         }
     }
 }
 ```
-Restart the Claude Desktop app.
 
-### For VSCode (with MCP extension)
+**VS Code with MCP Extension:**
+- Configure the extension to connect to `localhost:8000`
 
-1. Prerequisites
-* Python 3.12+
-* VSCode or VSCode Insiders
-* Things 3 ("Enable Things URLs" must be turned on in Settings -> General)
-* Apple Notes (for note management features)
-* macOS (required for AppleScript integration)
-* MCP extension for VSCode
+**Other MCP Tools:**
+- Set connection type to TCP
+- Host: `localhost` 
+- Port: `8000`
 
-2. Follow the installation steps from the Claude Desktop section above (steps 1-4).
+> **Note**: Replace the path with the actual location where you installed the app. If you moved it to your Applications folder, use: `/Applications/Things MCP.app/Contents/Resources/launch_mcp_server.sh`
 
-3. Install the MCP extension for VSCode:
-   - Open VSCode
-   - Go to Extensions (Ctrl+Shift+X / Cmd+Shift+X)
+4. Restart the Claude Desktop app.
+
+#### For VS Code (with MCP extension)
+
+1. First, ensure you have the Things MCP app installed and running.
+
+2. Install the MCP extension for VS Code:
+   - Open VS Code
+   - Go to Extensions (Cmd+Shift+X)
    - Search for "MCP" and install the official MCP extension
 
-4. Run the configuration setup script:
-```bash
-uv run python setup_config.py
-```
-Choose option 2 for VSCode configuration.
-
-Alternatively, you can manually configure VSCode settings:
-   - Open Settings (Ctrl+, / Cmd+,)
+3. Configure VS Code settings:
+   - Open Settings (Cmd+,)
    - Click "Open Settings (JSON)" in the top right
-   - Add this configuration (replace `/PATH/TO/YOUR/things-mcp` with your actual installation path):
+   - Add this configuration:
 
 ```json
 {
     "mcp": {
         "inputs": [],
         "servers": {
-            "things": {
-                "command": "uv",
-                "args": [
-                    "--directory",
-                    "/PATH/TO/YOUR/things-mcp",
-                    "run",
-                    "things_server.py"
-                ]
+            "things-swift": {
+                "command": "/Users/kb/things3-mcp-server/things-mcp/Things MCP.app/Contents/Resources/launch_mcp_server.sh",
+                "args": []
             }
         }
     }
 }
 ```
 
-5. Restart VSCode to load the MCP server.
+> **Note**: Replace the path with the actual location where you installed the app. If you moved it to your Applications folder, use: `/Applications/Things MCP.app/Contents/Resources/launch_mcp_server.sh`
 
-### Usage in VSCode
+4. Restart VS Code to load the MCP server.
+
+### Usage 
+
+#### In the Things MCP App
+
+1. Launch the Things MCP app from your Applications folder.
+2. The app provides a native macOS interface for:
+   - Viewing your Things 3 tasks, projects, and areas
+   - Managing your Apple Notes
+   - Monitoring MCP server connections
+   - Seeing activity logs in real-time
+
+#### In VS Code
 
 With the MCP extension installed and configured:
-1. Open the Command Palette (Ctrl+Shift+P / Cmd+Shift+P)
+1. Open the Command Palette (Cmd+Shift+P)
 2. Type "MCP" to see available MCP commands
 3. Use "MCP: Call Tool" to interact with Things tools
 4. Or use any AI assistant that supports MCP to access your Things data
 
-### For Web Browser Interface
+### For Any MCP-Compatible Tool
 
-1. Prerequisites
-* Python 3.12+
-* Things 3 ("Enable Things URLs" must be turned on in Settings -> General)
+This server follows the standard MCP protocol and can work with any MCP-compatible application or AI assistant. Simply configure your tool to connect to the Swift MCP server via TCP on `localhost:8000`.
 
-2. Follow steps 2-4 from the Claude Desktop installation above to install dependencies.
+**Compatible Applications Include:**
+- Claude Desktop
+- VS Code with MCP extensions
+- Cursor
+- Continue
+- Zed
+- Any custom MCP client implementation
 
-3. Start the web server:
-```bash
-cd things-mcp
-uv run python web_server.py
-```
-
-4. Open your browser and go to: `http://localhost:8000`
-
-5. Use the web interface to:
-   - Load your tasks directly from Things via MCP
-   - Create new tasks through the MCP server
-   - Generate and execute Things URL schemes
-   - Chat with an AI assistant that can access your Things data
-
-### For Other MCP Tools
-
-This server follows the standard MCP protocol and can work with any MCP-compatible tool. Configure the tool to execute `things_server.py` as an MCP server using the command line shown above.
-
-### Sample Usage with Claude Desktop
+### Sample Usage
 * "What's on my todo list today?"
-* "Create a todo to pack for my beach vacation next week, include a packling checklist."
+* "Create a todo to pack for my beach vacation next week, include a packing checklist."
 * "Evaluate my current todos using the Eisenhower matrix."
 * "Help me conduct a GTD-style weekly review using Things."
+* "Create a note with meeting minutes from today's standup"
+* "Search my notes for anything about the quarterly review"
 
 #### Tips
 * Create a project in Claude with custom instructions that explains how you use Things and organize areas, projects, tags, etc. Tell Claude what information you want included when it creates a new task (eg asking it to include relevant details in the task description might be helpful).
 * Try adding another MCP server that gives Claude access to your calendar. This will let you ask Claude to block time on your calendar for specific tasks, create todos from upcoming calendar events (eg prep for a meeting), etc.
 
+
+## Project Structure
+
+```
+Things MCP.app/               # The macOS Swift application
+├── Contents/
+│   ├── MacOS/                # Native Swift executable containing MCP server
+│   │   └── Things MCP        # Main app with embedded MCP server
+│   ├── Resources/            # Application resources
+│   └── Info.plist            # App bundle configuration
+├── Things MCP.xcodeproj/     # Xcode project
+├── SwiftMCPServer.swift      # Core MCP server implementation
+├── ThingsIntegration.swift   # Things 3 integration layer
+├── NotesIntegration.swift    # Apple Notes integration layer
+└── README.md                 # This documentation
+```
 
 ### Available Tools
 

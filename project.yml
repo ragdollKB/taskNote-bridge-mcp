@@ -1,0 +1,22 @@
+name: Things MCP
+options:
+  bundleIdPrefix: com.yourname
+  deploymentTarget:
+    macOS: "13.0"
+targets:
+  Things MCP:
+    type: application
+    platform: macOS
+    sources:
+      - Things MCP
+    resources:
+      - Things MCP/Resources
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.yourname.thingsmcp
+      MARKETING_VERSION: "1.0"
+      CURRENT_PROJECT_VERSION: "1"
+      SWIFT_VERSION: "5.9"
+      DEVELOPMENT_TEAM: ""
+      CODE_SIGN_STYLE: Automatic
+      INFOPLIST_FILE: Things MCP/Info.plist
+
