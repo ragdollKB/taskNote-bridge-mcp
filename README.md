@@ -1,6 +1,6 @@
 # TaskNote Bridge - Swift MCP Server with Things 3 & Apple Notes ✅
 
-[![Download Latest Release](https://img.shields.io/github/v/release/RagdollKB/tasknote-bridge?label=Download&style=for-the-badge)](https://github.com/RagdollKB/tasknote-bridge/releases/latest)
+[![Download Latest Release](https://img.shields.io/github/v/release/ragdollKB/taskNote-bridge-mcp?label=Download&style=for-the-badge)](https://github.com/ragdollKB/taskNote-bridge-mcp/releases/latest)
 
 A native macOS Swift application that implements a complete [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction) server for Things 3 and Apple Notes integration.
 
@@ -11,7 +11,7 @@ A native macOS Swift application that implements a complete [Model Context Proto
 ## 🚀 **Quick Install**
 
 ### 📥 Download & Install
-1. **[Download the latest release](https://github.com/RagdollKB/tasknote-bridge/releases/latest)**
+1. **[Download the latest release](https://github.com/ragdollKB/taskNote-bridge-mcp/releases/latest)**
 2. **Open the DMG** and drag TaskNote Bridge to Applications
 3. **Launch the app** - the MCP server starts automatically
 4. **Configure VS Code** with the settings below
@@ -93,7 +93,7 @@ open "TaskNote Bridge.app"
 ## Installation
 
 ### Option 1: Download the App (Recommended)
-Download the latest `TaskNote Bridge.app` from the [Releases](https://github.com/RagdollKB/tasknote-bridge/releases) page
+Download the latest `TaskNote Bridge.app` from the [Releases](https://github.com/ragdollKB/taskNote-bridge-mcp/releases) page
 
 ### Option 2: Build from Source
 If you prefer to build from source, you'll need:
@@ -103,8 +103,8 @@ If you prefer to build from source, you'll need:
 Clone the repository and build:
 ```bash
 # Clone the repository
-git clone https://github.com/RagdollKB/things-mcp.git
-cd things-mcp
+git clone https://github.com/ragdollKB/taskNote-bridge-mcp.git
+cd taskNote-bridge-mcp
 
 # Open in Xcode and build
 open "TaskNote Bridge.xcodeproj"
