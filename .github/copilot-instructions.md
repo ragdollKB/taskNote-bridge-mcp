@@ -1,304 +1,126 @@
-# GitHub Copilot Instructions for Things MCP Server
+Remember here is how you do a build of the xcode project:
 
-## Context
-You are working with a Things MCP (Model Context Protocol) server that integrates with the Things 3 task management app and Apple Notes. When users request task/project creation or note management, you should use the available MCP tools.
+xcodebuild -project "/Users/kb/things3-mcp-server/things-m
+cp/Things MCP.xcodeproj" -scheme "Things MCP" clean build
 
-## Available MCP Tools
 
-### Things 3 Tools
+Every time you do a build and it fails, track that in a md file called isses.md and update that when the error is resolved. 
 
-### bb7_add-todo
-Creates a new task in Things 3
-- **Required**: `title` (string)
-- **Optional**: `notes` (string), `deadline` (YYYY-MM-DD), `list_title` (string), `list_id` (string), `tags` (array of strings), `when` (string), `checklist_items` (array of strings), `heading` (string)
+# GitHub Copilot Instructions for MCP Development
 
-### bb7_add-project  
-Creates a new project in Things 3
-- **Required**: `title` (string)
-- **Optional**: `notes` (string), `area_title` (string), `area_id` (string), `tags` (array of strings), `deadline` (YYYY-MM-DD), `when` (string), `todos` (array of strings)
+## Overview
+This repository contains a macOS Swift application that implements a complete MCP (Model Context Protocol) server with Things 3 and Apple Notes integration capabilities.
 
-### bb7_search-todos
-Search for existing tasks
-- **Required**: `query` (string)
+## Project Structure
 
-### bb7_update-todo
-Update an existing task
-- **Required**: `id` (string)
-- **Optional**: `title`, `notes`, `deadline`, `completed`, `tags`, `when`
+### macOS Swift MCP Server Application
+The Swift macOS app (`Things MCP.xcodeproj`) is a **complete MCP server application** that:
+- **Implements a full MCP server in Swift** with Things 3 and Apple Notes tools
+- **Supports TCP transport protocol** for universal MCP client connections
 
-### bb7_get-projects
-List all projects
-- **Optional**: `include_items` (boolean)
+**Important**: This is a self-contained MCP server application that implements the MCP protocol.
 
-### bb7_get-today
-Get today's tasks
+## Instruction Files Structure
 
-### bb7_get-upcoming
-Get upcoming tasks
+### Core MCP Documentation
+- [MCP Architecture & Concepts](./mcp-architecture.md) - Core MCP concepts, architecture, and protocol overview
+- [MCP Client Implementation](./mcp-client-implementation.md) - Guidelines for implementing MCP clients
+- [MCP Server Development](./mcp-server-development.md) - Best practices for MCP server development
+- [MCP Protocol Specifications](./mcp-protocol-specs.md) - Detailed protocol specifications and technical implementation
 
-### bb7_get-anytime
-Get anytime tasks
+### Project-Specific Usage
+- [Things MCP Server Usage](./things-mcp-usage.md) - Instructions for using the Swift MCP server tools
 
-### open-todo
-Search for a todo by title and open it in Things 3 app
-- **Required**: `title` (string)
+## macOS App Purpose and Functionality
 
-### Apple Notes Tools
+The Swift macOS application serves as a **complete MCP server with monitoring interface** with these features:
 
-### notes-create
-Creates a new note in Apple Notes
-- **Required**: `title` (string), `content` (string)
-- **Optional**: `tags` (array of strings)
+### Primary Functions
+- **MCP Server Implementation**: Complete Swift-based MCP server with Things 3 and Apple Notes tools
+- **Server Status Monitoring**: Real-time status display and server metrics
+- **Log Streaming**: Live display of server logs and activity
+- **Connection Management**: Handle TCP client connections from any MCP-compatible application
+- **Request/Response Tracking**: Monitor MCP protocol communications
+- **Performance Metrics**: Uptime, request counts, error rates
 
-### notes-search
-Search for notes by title in Apple Notes
-- **Required**: `query` (string)
+### UI Components
+- **Status Dashboard**: Server state, uptime, connection count
+- **Log Viewer**: Real-time scrolling log display with filtering
+- **Connection Monitor**: Active client connections and transport types
+- **Settings Panel**: Server configuration (ports, log levels, etc.)
 
-### notes-get-content
-Get the content of a specific note from Apple Notes
-- **Required**: `title` (string)
+**The app implements the MCP server directly in Swift - it IS the server, not just a monitor. It also is not a note taking or todo app, but rather a robust server application.**
 
-### notes-list
-List all notes in Apple Notes
-- **Optional**: No parameters required
+## Key MCP Concepts
 
-### notes-open
-Open a note in Apple Notes app
-- **Required**: `title` (string)
+### What is MCP?
+The Model Context Protocol (MCP) is an open standard for connecting AI assistants to external data sources and tools. It provides a standardized way for AI models to:
+- Access real-time data
+- Execute actions in external systems
+- Maintain context across interactions
+- Integrate with various applications and services
 
-### notes-delete
-Delete a note from Apple Notes
-- **Required**: `title` (string)
+### MCP Architecture
+- **Clients**: AI applications and tools (Claude Desktop, VS Code, Cursor, Continue, Zed, etc.)
+- **Servers**: Applications that expose data and functionality via MCP (the Swift macOS app in this project)
+- **Transport**: Communication layer (TCP over network)
+- **Protocol**: JSON-RPC based messaging format
 
-## User Intent Recognition
+## Development Guidelines
 
-When users say phrases like:
+When working with MCP:
 
-### Things 3 Operations:
-- "Create a todo" → Use `bb7_add-todo`
-- "Create a task" → Use `bb7_add-todo`
-- "Add a task" → Use `bb7_add-todo`
-- "Create a project" → Use `bb7_add-project`
-- "Make a project" → Use `bb7_add-project`
-- "Add tasks to project" → Use `bb7_add-project` with `todos` array
-- "Find my tasks" → Use `bb7_search-todos`
-- "List my projects" → Use `bb7_get-projects`
-- "What's due today" → Use `bb7_get-today`
-- "Show upcoming tasks" → Use `bb7_get-upcoming`
-- "Open task" → Use `open-todo`
-- "Open todo" → Use `open-todo`
-- "Show me the task about..." → Use `open-todo`
+1. **Follow Protocol Standards**: Use JSON-RPC 2.0 format for all communications
+2. **Implement Proper Error Handling**: Handle connection failures and protocol errors gracefully
+3. **Use Semantic Versioning**: Follow semantic versioning for server capabilities
+4. **Document Tools Clearly**: Provide comprehensive tool descriptions and parameter schemas
+5. **Test Thoroughly**: Test with multiple MCP clients for compatibility
 
-### Apple Notes Operations:
-- "Create a note" → Use `notes-create`
-- "Add a note" → Use `notes-create`
-- "Write a note" → Use `notes-create`
-- "Take a note" → Use `notes-create`
-- "Search notes" → Use `notes-search`
-- "Find notes" → Use `notes-search`
-- "Get note content" → Use `notes-get-content`
-- "Read note" → Use `notes-get-content`
-- "List notes" → Use `notes-list`
-- "Show all notes" → Use `notes-list`
-- "Open note" → Use `notes-open`
-- "Show note" → Use `notes-open`
-- "Delete note" → Use `notes-delete`
-- "Remove note" → Use `notes-delete`
+### Swift Development (for the Monitor App)
+For the Swift macOS monitoring application, follow these guidelines:
 
-## Response Format
+1. **Swift API Design Guidelines**: Follow official Swift.org naming conventions and API design principles
+2. **Clarity at Point of Use**: Prioritize clear, unambiguous code over brevity
+3. **Type Safety**: Leverage Swift's strong type system to prevent runtime errors
+4. **Protocol-Oriented Programming**: Use protocols and extensions for composable behavior
+5. **Memory Safety**: Use Swift's automatic memory management with weak/unowned references appropriately
+6. **Concurrency**: Use actors and async/await for thread-safe concurrent operations
+7. **Error Handling**: Use Swift's error handling system with throwing functions and Result types
+8. **UI Responsiveness**: Keep monitoring tasks on background queues to maintain UI responsiveness
+9. **Real-time Updates**: Use Combine or async streams for real-time log and status updates
 
-Always respond with the appropriate MCP tool call. Don't explain what you're doing - just use the tool directly.
+**For comprehensive Swift guidelines, see [Swift Coding Instructions](./swift-coding-instructions.md)**
 
-## Examples
+## macOS App Development Focus
 
-### Single Task
-**User**: "Create a todo to buy groceries"
-**Action**: 
-```
-bb7_add-todo({
-  "title": "Buy groceries",
-  "tags": ["shopping"]
-})
-```
+When working on the Swift macOS application:
 
-### Project with Tasks
-**User**: "Create a project for Memorial Day BBQ with planning tasks"
-**Action**:
-```
-bb7_add-project({
-  "title": "Memorial Day BBQ",
-  "notes": "Planning and preparation for Memorial Day BBQ",
-  "tags": ["event", "planning"],
-  "todos": [
-    "Plan the menu",
-    "Create shopping list", 
-    "Invite guests",
-    "Prepare backyard",
-    "Shop for supplies",
-    "Prep food",
-    "Day of BBQ execution",
-    "Clean up"
-  ]
-})
-```
+### Primary Goals
+- **Server Implementation**: Implement the core MCP server functionality in Swift
+- **Status Monitoring**: Monitor the app's own MCP server health and status
+- **Log Management**: Display, filter, and manage server logs effectively
+- **Connection Tracking**: Show active client connections and transport types
+- **Administrative Controls**: Provide server start/stop and configuration capabilities
 
-### Task with Due Date
-**User**: "Remind me to submit my report by Friday"
-**Action**:
-```
-bb7_add-todo({
-  "title": "Submit report",
-  "deadline": "2025-05-30",
-  "tags": ["work", "deadline"]
-})
-```
+### Avoid These Patterns
+- **Direct Task Management**: Don't implement Things 3 task creation in the UI
+- **Note Management**: Don't implement Apple Notes functionality in the UI
+- **Business Logic**: Keep the UI focused on monitoring, not domain-specific functionality
 
-### Task for Today
-**User**: "Add a task to call mom today"
-**Action**:
-```
-bb7_add-todo({
-  "title": "Call mom",
-  "when": "today",
-  "tags": ["family"]
-})
-```
+### Implementation Patterns
+- **Real-time Updates**: Use publishers/subscribers for live data
+- **Log Streaming**: Display structured log output in real-time
+- **Network Monitoring**: Track TCP connections
+- **MCP Protocol**: Implement complete MCP server in Swift
 
-### Task with Checklist
-**User**: "Create a task to prepare for presentation with checklist items"
-**Action**:
-```
-bb7_add-todo({
-  "title": "Prepare for presentation",
-  "checklist_items": [
-    "Create slides",
-    "Rehearse presentation", 
-    "Print handouts",
-    "Test equipment"
-  ],
-  "tags": ["work", "presentation"]
-})
-```
+## Security Considerations
 
-## Guidelines
-
-1. **Always use MCP tools** when users request task/project creation
-2. **Be descriptive** in titles and notes
-3. **Add relevant tags** for organization
-4. **Include deadlines** when mentioned or implied
-5. **Use the `when` parameter** for scheduling (today, tomorrow, evening, anytime, someday)
-6. **Group related tasks** under projects using the `todos` array
-7. **Use checklist_items** for subtasks within a single todo
-
-## Scheduling Options for `when` parameter
-- `today` - Schedule for today
-- `tomorrow` - Schedule for tomorrow  
-- `evening` - Schedule for this evening
-- `anytime` - Add to Anytime list
-- `someday` - Add to Someday list
-- `YYYY-MM-DD` - Schedule for specific date
-
-## Error Prevention
-
-- Ensure dates are in YYYY-MM-DD format
-- Keep titles concise but descriptive
-- Use consistent project naming
-- Add tags that help with organization and filtering
-- Use `list_title` to add tasks to existing projects
-
-## Common Patterns
-
-### Shopping List Project
-```
-bb7_add-project({
-  "title": "Shopping List",
-  "todos": ["Buy milk", "Buy bread", "Buy eggs"],
-  "tags": ["groceries"]
-})
-```
-
-### Work Project with Deadline
-```
-bb7_add-project({
-  "title": "Q2 Review",
-  "deadline": "2025-06-30",
-  "area_title": "Work",
-  "todos": [
-    "Gather Q2 metrics",
-    "Analyze performance data",
-    "Create presentation",
-    "Schedule review meeting"
-  ],
-  "tags": ["work", "quarterly"]
-})
-```
-
-### Daily Task
-```
-bb7_add-todo({
-  "title": "Review emails",
-  "when": "today",
-  "tags": ["work", "daily"]
-})
-```
-
-### Task with Subtasks
-```
-bb7_add-todo({
-  "title": "Plan vacation",
-  "checklist_items": [
-    "Research destinations",
-    "Check flight prices", 
-    "Book accommodation",
-    "Create itinerary"
-  ],
-  "deadline": "2025-06-15",
-  "tags": ["personal", "travel"]
-})
-```
-
-### Apple Notes Examples
-
-### Simple Note
-**User**: "Create a note about today's meeting"
-**Action**:
-```
-notes-create({
-  "title": "Meeting Notes - May 24, 2025",
-  "content": "Key discussion points from today's team meeting",
-  "tags": ["meetings", "work"]
-})
-```
-
-### Meeting Notes
-**User**: "Take notes for the project review meeting"
-**Action**:
-```
-notes-create({
-  "title": "Project Review Meeting",
-  "content": "Attendees:\n- John, Sarah, Mike\n\nAgenda:\n1. Q2 Progress Review\n2. Resource Planning\n3. Next Steps\n\nAction Items:\n- Follow up on budget approval\n- Schedule client demo",
-  "tags": ["meetings", "project-review"]
-})
-```
-
-### Search Notes
-**User**: "Find my meeting notes"
-**Action**:
-```
-notes-search({
-  "query": "meeting"
-})
-```
-
-### Get Note Content
-**User**: "Show me the content of my shopping list note"
-**Action**:
-```
-notes-get-content({
-  "title": "Shopping List"
-})
-```
+- Validate all inputs from MCP clients
+- Implement proper authentication when needed
+- Use HTTPS for HTTP-based transports
+- Follow principle of least privilege for tool access
+- Log security-relevant events
 
 ---
 
-When in doubt, use the MCP tools to interact with Things 3 rather than suggesting manual entry. Always create tasks and projects directly using the available tools.
+For detailed implementation guidance, refer to the specific instruction files listed above.
