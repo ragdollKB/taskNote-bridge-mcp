@@ -1,52 +1,74 @@
-# 🚀 TaskNote Bridge - Public Release Checklist
+# 🚀 TaskNote Bridge - GitHub Release Checklist
 
-## ✅ Personal Information Removed
-- [x] Removed hardcoded path `/Users/kb/things3-mcp-server/things-mcp` from all files
-- [x] Updated MCP_Usage_Guide.txt to use generic paths
-- [x] Updated create_usage_note.py to use generic paths  
-- [x] Updated things3-mcp-interface.html to use generic paths
-- [x] Verified LICENSE has appropriate copyright (using "hald" as author)
-- [x] No personal email addresses or contact info in code
+## Pre-Release Testing
+- [ ] App builds successfully with `xcodebuild`
+- [ ] Custom icon displays correctly
+- [ ] MCP server starts automatically when app launches
+- [ ] Things 3 integration works (create task test)
+- [ ] Apple Notes integration works (create note test)
+- [ ] VS Code MCP integration tested end-to-end
 
-## ✅ Configuration Made User-Friendly
-- [x] Created `setup_config.py` script for automatic configuration
-- [x] Updated README.md with setup script instructions
-- [x] Provided manual configuration examples with placeholder paths
-- [x] Made all paths configurable rather than hardcoded
+## Release Preparation
+- [ ] Update version number in Xcode project
+- [ ] Update CHANGELOG.md with new version
+- [ ] Update version in `create_release_dmg.sh`
+- [ ] Test DMG creation: `./create_release_dmg.sh`
+- [ ] Verify DMG contains all necessary files
+- [ ] Test DMG installation on clean system
 
-## ✅ Documentation Updated
-- [x] README.md updated with generic installation instructions
-- [x] Added CONTRIBUTING.md for developers
-- [x] Updated pyproject.toml with proper build configuration
-- [x] Usage guide updated for generic setup
+## GitHub Repository Setup
+- [ ] Repository is public
+- [ ] README.md updated with download instructions
+- [ ] INSTALLATION.md is complete and accurate
+- [ ] All personal paths removed from documentation
+- [ ] License file included and up-to-date
 
-## ✅ Code Quality
-- [x] All Python files use proper shebangs (`#!/usr/bin/env python3`)
-- [x] No personal configuration files included
-- [x] Updated .gitignore to exclude personal configs
-- [x] Test files contain no personal information
-- [x] All MCP tools properly documented (Things 3 + Apple Notes integration)
+## Release Process
+- [ ] Create and push version tag: `git tag v1.0.0 && git push origin v1.0.0`
+- [ ] GitHub Actions workflow runs successfully
+- [ ] DMG file uploaded to release automatically
+- [ ] Release notes are accurate and helpful
+- [ ] Download link tested and working
 
-## ✅ macOS App (TaskNote Bridge)
-- [x] Swift macOS app renamed from "Things MCP" to "TaskNote Bridge"
-- [x] Xcode project and bundle identifier updated
-- [x] App builds successfully with new naming
-- [x] UI reflects dual functionality (task + note management bridge)
-- [x] MCP server implementation complete in Swift
+## Post-Release
+- [ ] Update README.md with latest release badge
+- [ ] Test installation instructions with fresh download
+- [ ] Monitor GitHub Issues for user feedback
+- [ ] Update project documentation if needed
 
-## ✅ Dependencies and Setup
-- [x] pyproject.toml properly configured for `uv pip install -e .`
-- [x] All required dependencies listed correctly
-- [x] Setup script handles both Claude Desktop and VSCode configuration
-- [x] Cross-platform considerations documented (macOS requirement)
+## Optional Enhancements
+- [ ] Code signing with Developer ID (reduces security warnings)
+- [ ] Notarization (eliminates security warnings completely)
+- [ ] Homebrew cask for `brew install --cask tasknote-bridge`
+- [ ] Installation video or screenshots
 
-## ✅ Repository Structure
-- [x] Clean directory structure without personal artifacts
-- [x] Appropriate files in .gitignore
-- [x] Documentation files (README, CONTRIBUTING, LICENSE) present
-- [x] Example configurations use placeholder paths
+## Distribution Channels
+- [ ] GitHub Releases (primary)
+- [ ] Direct link sharing
+- [ ] Developer community forums
+- [ ] MCP ecosystem listings
 
-## 🎯 Ready for Public Release!
+---
+
+## Quick Release Commands
+
+```bash
+# 1. Build and test
+xcodebuild -project "TaskNote Bridge.xcodeproj" -scheme "TaskNote Bridge" clean build
+
+# 2. Create DMG
+./create_release_dmg.sh
+
+# 3. Create release
+git tag v1.0.0
+git push origin v1.0.0
+
+# 4. GitHub Actions will automatically:
+#    - Build the app
+#    - Create DMG
+#    - Create GitHub release
+#    - Upload DMG asset
+```
 
 ### Final Steps for Publication:
 1. **Remove VS Code settings.json reference** (this is user-specific)

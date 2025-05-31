@@ -1,33 +1,48 @@
 # TaskNote Bridge - Swift MCP Server with Things 3 & Apple Notes ✅
 
-A native macOS Swift application that implements a complete [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction) server for Things 3 and Apple Notes integration. TaskNote Bridge provides **TWO working MCP server implementations**:
+[![Download Latest Release](https://img.shields.io/github/v/release/yourusername/tasknote-bridge?label=Download&style=for-the-badge)](https://github.com/yourusername/tasknote-bridge/releases/latest)
 
-1. **📱 macOS GUI App**: Complete server with monitoring interface
-2. **⚡ stdio MCP Server**: Lightweight server for VS Code integration
+A native macOS Swift application that implements a complete [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction) server for Things 3 and Apple Notes integration.
 
-**Status**: ✅ **PRODUCTION READY** - Both servers fully functional and tested with Things 3!
+**Status**: ✅ **PRODUCTION READY** - Complete MCP server with GUI monitoring
 
 <a href="https://glama.ai/mcp/servers/t9cgixg2ah"><img width="380" height="200" src="https://glama.ai/mcp/servers/t9cgixg2ah/badge" alt="Things Server MCP server" /></a>
 
+## 🚀 **Quick Install**
+
+### 📥 Download & Install
+1. **[Download the latest release](https://github.com/yourusername/tasknote-bridge/releases/latest)**
+2. **Open the DMG** and drag TaskNote Bridge to Applications
+3. **Launch the app** - the MCP server starts automatically
+4. **Configure VS Code** with the settings below
+
+### ⚙️ VS Code Configuration
+Add this to your VS Code `settings.json`:
+
+```json
+{
+    "mcp": {
+        "inputs": [],
+        "servers": {
+            "things-swift": {
+                "command": "/Applications/TaskNote Bridge.app/Contents/Resources/launch_mcp_server.sh",
+                "args": []
+            }
+        }
+    }
+}
+```
+
+**That's it!** 🎉 You're ready to create tasks and notes via AI assistants.
+
+## 📋 Requirements
+
+- **macOS**: 12.0+ (Monterey or later)
+- **Things 3**: Install from Mac App Store
+- **Apple Notes**: Built into macOS
+- **VS Code**: With MCP extension
+
 ## 🎯 **What Works Right Now**
-
-### ✅ **stdio MCP Server** (VS Code Ready)
-- **Status**: ✅ **FULLY WORKING** - Tasks successfully created in Things 3
-- **File**: `swift_mcp_stdio.swift` + `launch_swift_mcp_stdio.sh`
-- **Purpose**: Direct VS Code MCP extension integration
-- **Testing**: ✅ Verified task creation via Things 3 URL schemes
-- **Integration**: Ready for VS Code MCP extension (see `VSCODE_MCP_SETUP.md`)
-
-### ✅ **macOS GUI App** (Server Monitoring)
-- **Status**: ✅ **BUILT & RUNNING** - Auto-starts MCP server
-- **File**: `TaskNote Bridge.app` 
-- **Purpose**: Server monitoring interface + TCP transport  
-- **Features**: Real-time monitoring, log streaming, connection tracking
-- **Transport**: TCP on port 8000 for network clients
-
-## 🚀 **Quick Start**
-
-### For VS Code Integration (Recommended)
 ```bash
 # Test the stdio server (creates task in Things 3!)
 echo '{"jsonrpc": "2.0", "id": 1, "method": "tools/call", "params": {"name": "bb7_add-todo", "arguments": {"title": "Hello from VS Code!", "tags": ["test"]}}}' | ./launch_swift_mcp_stdio.sh

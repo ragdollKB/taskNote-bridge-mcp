@@ -4,75 +4,29 @@
 
 1. Make sure you have **Things 3** and **Apple Notes** installed on macOS
 2. Have VS Code with an MCP extension installed
-3. TaskNote Bridge.app available in your project directory or Applications folder
+3. TaskNote Bridge.app available in your project directory
 
 ## Setup Instructions
 
-### 1. VS Code Settings
+### VS Code Settings Configuration
 
 Add this configuration to your VS Code settings.json:
 
 ```json
 {
-  "mcp.servers": {
-    "taskNote-bridge": {
-      "command": "/path/to/your/project/launch_swift_mcp_stdio.sh",
-      "args": [],
-      "env": {}
+    "mcp": {
+        "inputs": [],
+        "servers": {
+            "things-swift": {
+                "command": "/Users/kb/things3-mcp-server/things-mcp/Things MCP.app/Contents/Resources/launch_mcp_server.sh",
+                "args": []
+            }
+        }
     }
-  }
 }
 ```
 
-**Note**: Replace `/path/to/your/project/` with your actual project directory path.
-
-### 2. Alternative Configuration (Direct Swift)
-
-If you prefer to call Swift directly:
-
-```json
-{
-  "mcp.servers": {
-    "taskNote-bridge": {
-      "command": "swift",
-      "args": ["/path/to/your/project/swift_mcp_stdio.swift"],
-      "env": {}
-    }
-  }
-}
-```
-
-### 3. Using Installed App (if available)
-
-If you have TaskNote Bridge.app installed in Applications:
-
-```json
-{
-  "mcp.servers": {
-    "taskNote-bridge": {
-      "command": "/Applications/TaskNote Bridge.app/Contents/Resources/launch_mcp_server.sh",
-      "args": [],
-      "env": {}
-    }
-  }
-}
-```
-
-### 4. Claude Desktop Configuration
-
-For Claude Desktop, add this to your `claude_desktop_config.json`:
-
-```json
-{
-  "mcpServers": {
-    "taskNote-bridge": {
-      "command": "/path/to/your/project/launch_swift_mcp_stdio.sh",
-      "args": [],
-      "env": {}
-    }
-  }
-}
-```
+**Note**: Update the path to match your actual TaskNote Bridge app location if different.
 
 ## Available Tools
 
