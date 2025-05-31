@@ -94,3 +94,5 @@ project.yml
 pyproject.toml
 package.json
 uv.lock
+
+.github/
