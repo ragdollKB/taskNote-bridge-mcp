@@ -18,7 +18,7 @@ class SwiftMCPServer: ObservableObject {
     @Published var status = "Stopped"
     @Published var lastError: String?
     
-    private let logger = Logger(subsystem: "things-mcp", category: "SwiftMCPServer")
+    private let logger = Logger(subsystem: "com.tasknotebridge.mcp", category: "SwiftMCPServer")
     
     // TCP transport
     private var tcpListener: NWListener?

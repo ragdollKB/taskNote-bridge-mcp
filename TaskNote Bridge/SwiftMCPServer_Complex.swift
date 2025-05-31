@@ -8,7 +8,7 @@ class SwiftMCPServer: ObservableObject {
     
     // MARK: - Properties
     
-    let logger = Logger(subsystem: "com.kb.thingsmcp", category: "MCPServer")
+    let logger = Logger(subsystem: "com.tasknotebridge.mcp", category: "MCPServer")
     @Published var isRunning = false
     private var tools: [String: ServerMCPTool] = [:]
     

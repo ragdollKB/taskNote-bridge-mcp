@@ -1,7 +1,6 @@
 Remember here is how you do a build of the xcode project:
 
-xcodebuild -project "/Users/kb/things3-mcp-server/things-m
-cp/TaskNote Bridge.xcodeproj" -scheme "TaskNote Bridge" clean build
+xcodebuild -project "[PROJECT_PATH]/TaskNote Bridge.xcodeproj" -scheme "TaskNote Bridge" clean build
 
 
 Every time you do a build and it fails, track that in a md file called isses.md and update that when the error is resolved. 

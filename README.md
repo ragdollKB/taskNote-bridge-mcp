@@ -315,7 +315,7 @@ After configuring any client:
         "inputs": [],
         "servers": {
             "things-swift": {
-                "command": "/Users/kb/things3-mcp-server/things-mcp/TaskNote Bridge.app/Contents/Resources/launch_mcp_server.sh",
+                "command": "/Applications/TaskNote Bridge.app/Contents/Resources/launch_mcp_server.sh",
                 "args": []
             }
         }

@@ -60,6 +60,37 @@ settings.json
 # Keep the GitHub folder for Copilot instructions
 # .github/
 
-# Documents
+# Testing scripts and files
+test_tool_call.sh
+test_stdio_transport.swift
+test_vscode_integration.sh
+launch_mcp_client.sh
+launch_swift_mcp_stdio.sh
+things_mcp_cli.swift
+swift_mcp_stdio.swift
+
+# Setup and configuration documentation
+VSCODE_MCP_SETUP.md
+INSTALLATION.md
+MCP_Usage_Guide.txt
+
+# App publishing and release files
+APP_STORE_PREP.md
 RELEASE_CHECKLIST.md
+archive_for_app_store.sh
+create_release_dmg.sh
+update_icon.sh
 issues.md
+
+# Build artifacts
+build/
+*.app
+*.swiftmodule/
+*.build/
+XCBuildData/
+
+# Project configuration files
+project.yml
+pyproject.toml
+package.json
+uv.lock
