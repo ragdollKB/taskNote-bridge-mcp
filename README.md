@@ -1,6 +1,6 @@
 # TaskNote Bridge - Swift MCP Server with Things 3 & Apple Notes ✅
 
-[![Download Latest Release](https://img.shields.io/github/v/release/yourusername/tasknote-bridge?label=Download&style=for-the-badge)](https://github.com/yourusername/tasknote-bridge/releases/latest)
+[![Download Latest Release](https://img.shields.io/github/v/release/ragdollKB/taskNote-bridge-mcp?label=Download&style=for-the-badge)](https://github.com/ragdollKB/taskNote-bridge-mcp/releases/latest)
 
 A native macOS Swift application that implements a complete [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction) server for Things 3 and Apple Notes integration.
 
@@ -11,7 +11,7 @@ A native macOS Swift application that implements a complete [Model Context Proto
 ## 🚀 **Quick Install**
 
 ### 📥 Download & Install
-1. **[Download the latest release](https://github.com/yourusername/tasknote-bridge/releases/latest)**
+1. **[Download the latest release](https://github.com/ragdollKB/taskNote-bridge-mcp/releases/latest)**
 2. **Open the DMG** and drag TaskNote Bridge to Applications
 3. **Launch the app** - the MCP server starts automatically
 4. **Configure VS Code** with the settings below
@@ -93,15 +93,9 @@ open "TaskNote Bridge.app"
 ## Installation
 
 ### Option 1: Download the App (Recommended)
-1. Download the latest `TaskNote Bridge.app` from the [Releases](https://github.com/yourusername/tasknote-bridge/releases) page
-2. Use the included install script to move it to your Applications folder:
-   ```bash
-   ./install.sh
-   ```
-   This script will:
-   - Copy the app to your Applications folder
-   - Create necessary launcher scripts
-   - Provide configuration instructions for VS Code and Claude Desktop
+1. Download the latest `TaskNote-Bridge-v1.0.0.dmG` from the [Releases](https://github.com/ragdollKB/taskNote-bridge-mcp/releases) page
+2. Open the DMG file and drag TaskNote Bridge to your Applications folder
+3. Launch the app - the MCP server starts automatically
 ### Option 2: Build from Source
 If you prefer to build from source, you'll need:
 - Xcode 14.0 or newer
