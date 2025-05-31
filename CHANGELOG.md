@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - VS Code MCP extension integration via stdio transport
 - Auto-start server functionality in macOS GUI app
 - Comprehensive test suite for end-to-end validation
+- **Custom app icon integration** with automated conversion system
 
 ### Fixed
 - **Critical**: Things 3 URL scheme generation (`things://add/` → `things:///add`)
@@ -25,6 +26,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Modified MCPService.swift to auto-start server on app initialization
 - Enhanced tool schemas with complete parameter support
 - Improved error messages and validation
+- **Updated app branding** with custom icon throughout macOS interface
+
+### Technical Details
+- **Icon System**: Automated JPEG to PNG conversion with `update_icon.sh`
+- **Icon Assets**: Complete iconset generation (16x16 to 512x512, including @2x versions)
+- **Bundle Integration**: AppIcon.png properly embedded as Xcode project resource
+- **macOS Integration**: Custom icon displays in Finder, Dock, and app launcher
 
 ## [0.9.0] - 2025-05-30 (Build 27)
 

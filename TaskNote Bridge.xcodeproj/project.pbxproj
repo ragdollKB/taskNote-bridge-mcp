@@ -19,6 +19,7 @@
 
 		C9A8ED545AD84E7B828A7F40 /* MCPService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D268D6A08A4EF76A2DB7D74B /* MCPService.swift */; };
 		D4B7D1A0CE7FEB7549F4B01C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FAB56B4FB41D19A8D7A5524 /* ContentView.swift */; };
+		FF123456789ABCDEF0123457 /* AppIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = FF123456789ABCDEF0123456 /* AppIcon.png */; };
 
 /* End PBXBuildFile section */
 
@@ -41,6 +42,7 @@
 
 		D268D6A08A4EF76A2DB7D74B /* MCPService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCPService.swift; sourceTree = "<group>"; };
 		DF97D312558EC3E8802FC811 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		FF123456789ABCDEF0123456 /* AppIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AppIcon.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -143,6 +145,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FF123456789ABCDEF0123457 /* AppIcon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
