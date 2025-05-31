@@ -3,7 +3,12 @@
 <plist version="1.0">
 <dict>
 	<key>files</key>
-	<dict/>
+	<dict>
+		<key>Resources/AppIcon.png</key>
+		<data>
+		oI7EEsfXZuWujb5TDGCF+bIwgVI=
+		</data>
+	</dict>
 	<key>files2</key>
 	<dict>
 		<key>MacOS/TaskNote Bridge.debug.dylib</key>
@@ -23,6 +28,13 @@
 			</data>
 			<key>requirement</key>
 			<string>cdhash H"4b5595467e6662cb4b8f3f5c602b34bf9644d518"</string>
+		</dict>
+		<key>Resources/AppIcon.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			kscsANsjp1MvFe9cQV+Y0CeE2fDh+1o1Y4PPuYQ1t/c=
+			</data>
 		</dict>
 	</dict>
 	<key>rules</key>

@@ -1,1 +1,0 @@
-/Users/kb/things3-mcp-server/things-mcp/Things MCP.app/Contents/Resources/launch_mcp_server.sh
