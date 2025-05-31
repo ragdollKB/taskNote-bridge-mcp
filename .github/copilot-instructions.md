@@ -1,11 +1,14 @@
+
+
+Every time you do a build and it fails, track that in a md file called issues.md and update that when the error is resolved. Remove any old entries in that file.
+
+# GitHub Copilot Instructions for MCP Development
+
 Remember here is how you do a build of the xcode project:
 
 xcodebuild -project "[PROJECT_PATH]/TaskNote Bridge.xcodeproj" -scheme "TaskNote Bridge" clean build
 
-
-Every time you do a build and it fails, track that in a md file called isses.md and update that when the error is resolved. 
-
-# GitHub Copilot Instructions for MCP Development
+This is a self-contained MacOS App that will be put into a DMG and distributed. DDon't create anything outside that app that is required to run the MCP server.
 
 ## Overview
 This repository contains a macOS Swift application that implements a complete MCP (Model Context Protocol) server with Things 3 and Apple Notes integration capabilities.

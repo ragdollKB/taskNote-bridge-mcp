@@ -236,19 +236,32 @@ class SwiftMCPServer: ObservableObject {
     private func receiveData(from connection: NWConnection) {
         connection.receive(minimumIncompleteLength: 1, maximumLength: 65536) { [weak self] data, _, isComplete, error in
             Task { @MainActor in
+                if let error = error {
+                    self?.logger.error("Receive error: \(error.localizedDescription)")
+                    return
+                }
+                
                 if let data = data, !data.isEmpty {
                     await self?.processData(data, from: connection)
                 }
                 
-                if !isComplete {
-                    self?.receiveData(from: connection)
-                }
+                // Continue listening for more data unless there was an error
+                // isComplete just means this particular receive operation is done,
+                // not that the connection is closed
+                self?.receiveData(from: connection)
             }
         }
     }
     
     private func processData(_ data: Data, from connection: NWConnection) async {
         logger.info("Received \(data.count) bytes")
+        
+        // Log the actual data for debugging (first 200 chars)
+        if let dataString = String(data: data, encoding: .utf8) {
+            let preview = String(dataString.prefix(200))
+            logger.info("Data preview: \(preview)")
+            print("MCP Server - Received data: \(preview)")
+        }
         
         // Log request for debugging
         onLog?("INFO", "Received \(data.count) bytes", "SwiftMCPServer")
@@ -259,6 +272,9 @@ class SwiftMCPServer: ObservableObject {
             let method = json?["method"] as? String ?? "unknown"
             let idValue = json?["id"]
             let params = json?["params"] as? [String: Any]
+            
+            logger.info("Processing method: \(method), id: \(String(describing: idValue))")
+            print("MCP Server - Processing method: \(method)")
             
             // For now, just log the request without creating complex types
             let requestInfo = ["method": method, "id": idValue as Any, "params": params as Any]
@@ -279,13 +295,17 @@ class SwiftMCPServer: ObservableObject {
             }
             
             let responseData = try JSONSerialization.data(withJSONObject: response)
+            logger.info("Sending response: \(responseData.count) bytes")
+            print("MCP Server - Sending response: \(responseData.count) bytes")
             sendData(responseData, to: connection)
             
             onResponse?(response)
             
         } catch {
-            logger.error("Failed to process request: \(error.localizedDescription)")
-            onLog?("ERROR", "Failed to process request: \(error.localizedDescription)", "SwiftMCPServer")
+            let errorMsg = "Failed to process request: \(error.localizedDescription)"
+            logger.error("\(errorMsg)")
+            print("MCP Server - Error: \(errorMsg)")
+            onLog?("ERROR", errorMsg, "SwiftMCPServer")
         }
     }
     
@@ -364,7 +384,12 @@ class SwiftMCPServer: ObservableObject {
     private func sendData(_ data: Data, to connection: NWConnection) {
         connection.send(content: data, completion: .contentProcessed { [weak self] error in
             if let error = error {
-                self?.logger.error("Failed to send data: \(error.localizedDescription)")
+                let errorMsg = "Failed to send data: \(error.localizedDescription)"
+                self?.logger.error("\(errorMsg)")
+                print("MCP Server - Send error: \(errorMsg)")
+            } else {
+                self?.logger.info("Successfully sent \(data.count) bytes")
+                print("MCP Server - Successfully sent \(data.count) bytes")
             }
         })
     }
@@ -374,7 +399,10 @@ class SwiftMCPServer: ObservableObject {
         case .ready:
             logger.info("Connection ready")
         case .failed(let error):
-            logger.error("Connection failed: \(error.localizedDescription)")
+            let errorDescription = error.localizedDescription
+            logger.error("Connection failed: \(errorDescription)")
+            // Also log to console to avoid <private> masking
+            print("MCP Server - Connection failed: \(errorDescription)")
             connections.removeAll { $0 === connection }
         case .cancelled:
             logger.info("Connection cancelled")

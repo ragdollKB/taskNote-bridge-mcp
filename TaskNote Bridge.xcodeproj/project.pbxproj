@@ -15,6 +15,7 @@
 		AA1122334455667788990022 /* MCPProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1122334455667788990022 /* MCPProtocol.swift */; };
 		AA1122334455667788990033 /* ThingsIntegration.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1122334455667788990033 /* ThingsIntegration.swift */; };
 		AA1122334455667788990044 /* NotesIntegration.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1122334455667788990044 /* NotesIntegration.swift */; };
+		AA1122334455667788990055 /* StdioMCPServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1122334455667788990055 /* StdioMCPServer.swift */; };
 
 
 		C9A8ED545AD84E7B828A7F40 /* MCPService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D268D6A08A4EF76A2DB7D74B /* MCPService.swift */; };
@@ -37,6 +38,7 @@
 		BB1122334455667788990022 /* MCPProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCPProtocol.swift; sourceTree = "<group>"; };
 		BB1122334455667788990033 /* ThingsIntegration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThingsIntegration.swift; sourceTree = "<group>"; };
 		BB1122334455667788990044 /* NotesIntegration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesIntegration.swift; sourceTree = "<group>"; };
+		BB1122334455667788990055 /* StdioMCPServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StdioMCPServer.swift; sourceTree = "<group>"; };
 
 
 
@@ -55,6 +57,7 @@
 				BB1122334455667788990022 /* MCPProtocol.swift */,
 				DF97D312558EC3E8802FC811 /* Models.swift */,
 				BB1122334455667788990044 /* NotesIntegration.swift */,
+				BB1122334455667788990055 /* StdioMCPServer.swift */,
 				BB1122334455667788990011 /* SwiftMCPServer.swift */,
 				A204014C667CC290A2213323 /* ThingsMCPApp.swift */,
 				BB1122334455667788990033 /* ThingsIntegration.swift */,
@@ -161,6 +164,7 @@
 				AA1122334455667788990022 /* MCPProtocol.swift in Sources */,
 				1C9877405B3A222221D19617 /* Models.swift in Sources */,
 				AA1122334455667788990044 /* NotesIntegration.swift in Sources */,
+				AA1122334455667788990055 /* StdioMCPServer.swift in Sources */,
 				AA1122334455667788990011 /* SwiftMCPServer.swift in Sources */,
 				178E51959413F31054653696 /* ThingsMCPApp.swift in Sources */,
 				AA1122334455667788990033 /* ThingsIntegration.swift in Sources */,

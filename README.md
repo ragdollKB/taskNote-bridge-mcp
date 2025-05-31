@@ -16,6 +16,24 @@ A native macOS Swift application that implements a complete [Model Context Proto
 3. **Launch the app** - the MCP server starts automatically
 4. **Configure VS Code** with the settings below
 
+### ⚙️ Claude Desktop Configuration
+Add this to your Claude Desktop MCP server configuration:
+
+```json
+{
+    "mcpServers": {
+        "tasknote-bridge": {
+            "command": "/path/to/tasknote-bridge/launch_swift_mcp_stdio.sh"
+        }
+    }
+}
+```
+
+> **📝 Note**: Replace `/path/to/tasknote-bridge/` with your actual installation directory. For example:
+> - If you downloaded the release: `/Users/[username]/Downloads/tasknote-bridge/`
+> - If you cloned the repo: `/Users/[username]/Projects/tasknote-bridge/`
+> - If you moved it to Applications: `/Applications/TaskNote Bridge/`
+
 ### ⚙️ VS Code Configuration
 Add this to your VS Code `settings.json`:
 
@@ -25,7 +43,7 @@ Add this to your VS Code `settings.json`:
         "inputs": [],
         "servers": {
             "things-swift": {
-                "command": "/Applications/TaskNote Bridge.app/Contents/Resources/launch_mcp_server.sh",
+                "command": "/path/to/tasknote-bridge/launch_swift_mcp_stdio.sh",
                 "args": []
             }
         }
@@ -118,52 +136,68 @@ open "TaskNote Bridge.xcodeproj"
 * Apple Notes (for note management features)
 * macOS 13.0 or newer (required for SwiftUI and AppleScript integration)
 
+## 🏗️ **Project Architecture**
+
+This project provides **two MCP server implementations** for different use cases:
+
+### 📱 **TaskNote Bridge.app** (GUI Application)
+- **Purpose**: macOS app with visual monitoring interface
+- **Transport**: TCP server (port 8000) for network-based connections
+- **Features**: Real-time dashboard, connection monitoring, log viewer
+- **Use Case**: When you want visual monitoring of server activity
+- **Launch**: Open the app from Applications folder
+
+### 📟 **swift_mcp_stdio.swift** (Command-Line Server)  
+- **Purpose**: Lightweight stdio-based MCP server
+- **Transport**: Standard input/output communication
+- **Features**: Direct JSON-RPC message handling, minimal overhead
+- **Use Case**: **Recommended for Claude Desktop** and most MCP clients
+- **Launch**: Via `launch_swift_mcp_stdio.sh` script
+
+### 🔧 **Which One to Use?**
+
+| MCP Client | Recommended Server | Configuration |
+|------------|-------------------|---------------|
+| **Claude Desktop** | ✅ stdio script | `command: "/path/to/launch_swift_mcp_stdio.sh"` |
+| **VS Code MCP** | ✅ stdio script | Same as Claude Desktop |
+| **Custom TCP client** | 📱 GUI app | Connect to `localhost:8000` |
+| **Development/Testing** | 📱 GUI app | Visual monitoring + TCP access |
+
+> **💡 Key Point**: Most MCP clients (including Claude Desktop) expect stdio-based communication, not TCP connections.
+
 ## 🔗 MCP Client Connection Guide
 
 TaskNote Bridge supports multiple connection methods to work with various MCP clients. Choose the method that works best for your client:
 
 ### 🎯 Claude Desktop
 
-#### Method 1: TCP Connection (Recommended)
-1. **Launch TaskNote Bridge** app from Applications
-2. **Start the TCP server** (default port 8000) - the app will show server status
-3. **Configure Claude Desktop**:
-   - Open Claude Desktop
-   - Click the settings gear (⚙️) in the bottom left
-   - Select "Developer"
-   - In the "MCP Servers" section, click "Edit Config"
-   - Add this configuration:
+**Configure Claude Desktop** to use the stdio-based MCP server:
+
+1. **Open Claude Desktop**
+2. **Click the settings gear (⚙️)** in the bottom left
+3. **Select "Developer"**
+4. **In the "MCP Servers" section, click "Edit Config"**
+5. **Add this configuration**:
 
 ```json
 {
     "mcpServers": {
         "tasknote-bridge": {
-            "command": "nc",
-            "args": ["localhost", "8000"]
+            "command": "/path/to/tasknote-bridge/launch_swift_mcp_stdio.sh"
         }
     }
 }
 ```
 
-4. **Restart Claude Desktop** to apply the changes
+> **📝 Note**: Replace `/path/to/tasknote-bridge/` with your actual installation directory. Common paths:
+> - **Downloaded release**: `/Users/[username]/Downloads/tasknote-bridge/launch_swift_mcp_stdio.sh`
+> - **Cloned repository**: `/Users/[username]/Projects/tasknote-bridge/launch_swift_mcp_stdio.sh`
+> - **App bundle install**: `/Applications/TaskNote Bridge.app/Contents/Resources/launch_swift_mcp_stdio.sh` ```
 
-#### Method 2: Stdio Connection
-1. **Configure Claude Desktop** with this settings:
+6. **Save the configuration**
+7. **Restart Claude Desktop** to apply the changes
 
-```json
-{
-    "mcpServers": {
-        "tasknote-bridge": {
-            "command": "/Applications/TaskNote Bridge.app/Contents/Resources/launch_mcp_server.sh",
-            "args": []
-        }
-    }
-}
-```
-
-2. **Restart Claude Desktop**
-
-> **💡 Tip**: Use Method 1 (TCP) if you want to keep the TaskNote Bridge monitoring interface open while using Claude Desktop.
+> **✅ Success**: Claude Desktop will now connect via stdio transport, which is the recommended and most reliable method for MCP communication.
 
 ### 🔧 VS Code with MCP Extension
 
@@ -526,3 +560,54 @@ echo '{"jsonrpc": "2.0", "id": 1, "method": "tools/list"}' | /Applications/TaskN
 #### "Apple Notes access denied" errors
 - Grant TaskNote Bridge permission to control Apple Notes in System Preferences → Security & Privacy → Automation
 - Ensure Apple Notes app is not restricted by any security software
+
+## 🚨 Troubleshooting
+
+### Claude Desktop Connection Issues
+
+#### "Request timed out" / Server not responding
+If Claude Desktop shows timeout errors or doesn't receive responses:
+
+**❌ Incorrect Configuration (causes timeouts):**
+```json
+{
+    "mcpServers": {
+        "tasknote-bridge": {
+            "command": "nc",
+            "args": ["localhost", "8000"]
+        }
+    }
+}
+```
+
+**✅ Correct Configuration:**
+```json
+{
+    "mcpServers": {
+        "tasknote-bridge": {
+            "command": "/path/to/tasknote-bridge/launch_swift_mcp_stdio.sh"
+        }
+    }
+}
+```
+
+**Why this matters:**
+- Claude Desktop expects **stdio-based communication** (launching a subprocess)
+- The `nc localhost 8000` approach tries to use TCP through netcat, which doesn't properly handle MCP protocol initialization
+- The stdio script provides proper JSON-RPC message handling that Claude Desktop requires
+
+**To fix:**
+1. Update your Claude Desktop configuration to use the stdio script
+2. Restart Claude Desktop
+3. The connection should now work without timeouts
+
+#### Verify the server works
+Test the stdio server directly:
+```bash
+echo '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0.0"}}}' | /path/to/tasknote-bridge/launch_swift_mcp_stdio.sh
+```
+
+You should see an immediate response like:
+```json
+{"jsonrpc":"2.0","id":1,"result":{"serverInfo":{"name":"things-mcp-swift","version":"1.0.0"},"protocolVersion":"2024-11-05","capabilities":{"tools":{}}}}
+```
