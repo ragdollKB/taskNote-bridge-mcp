@@ -8,7 +8,7 @@ struct ContentView: View {
         NavigationSplitView {
             // Sidebar
             VStack(alignment: .leading, spacing: 0) {
-                Text("Things MCP Server")
+                Text("TaskNote Bridge Server")
                     .font(.title2)
                     .fontWeight(.bold)
                     .padding()

@@ -1,6 +1,6 @@
-# Things MCP Server - Swift MCP Server with Things 3 & Apple Notes ✅
+# TaskNote Bridge - Swift MCP Server with Things 3 & Apple Notes ✅
 
-A native macOS Swift application that implements a complete [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction) server for Things 3 and Apple Notes integration. This project provides **TWO working MCP server implementations**:
+A native macOS Swift application that implements a complete [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction) server for Things 3 and Apple Notes integration. TaskNote Bridge provides **TWO working MCP server implementations**:
 
 1. **📱 macOS GUI App**: Complete server with monitoring interface
 2. **⚡ stdio MCP Server**: Lightweight server for VS Code integration
@@ -20,7 +20,7 @@ A native macOS Swift application that implements a complete [Model Context Proto
 
 ### ✅ **macOS GUI App** (Server Monitoring)
 - **Status**: ✅ **BUILT & RUNNING** - Auto-starts MCP server
-- **File**: `Things MCP.app` 
+- **File**: `TaskNote Bridge.app` 
 - **Purpose**: Server monitoring interface + TCP transport  
 - **Features**: Real-time monitoring, log streaming, connection tracking
 - **Transport**: TCP on port 8000 for network clients
@@ -41,8 +41,8 @@ echo '{"jsonrpc": "2.0", "id": 1, "method": "tools/call", "params": {"name": "bb
 ### For GUI Monitoring
 ```bash
 # Build and run the macOS app
-xcodebuild -project "Things MCP.xcodeproj" -scheme "Things MCP" build
-open "Things MCP.app"
+xcodebuild -project "TaskNote Bridge.xcodeproj" -scheme "TaskNote Bridge" build
+open "TaskNote Bridge.app"
 # Server auto-starts with monitoring interface
 ```
 
@@ -78,7 +78,7 @@ open "Things MCP.app"
 ## Installation
 
 ### Option 1: Download the App (Recommended)
-1. Download the latest `Things MCP.app` from the [Releases](https://github.com/yourusername/things-mcp/releases) page
+1. Download the latest `TaskNote Bridge.app` from the [Releases](https://github.com/yourusername/tasknote-bridge/releases) page
 2. Use the included install script to move it to your Applications folder:
    ```bash
    ./install.sh
@@ -99,7 +99,7 @@ git clone https://github.com/yourusername/things-mcp.git
 cd things-mcp
 
 # Open in Xcode and build
-open "Things MCP.xcodeproj"
+open "TaskNote Bridge.xcodeproj"
 ```
 
 ### Configuration
@@ -112,7 +112,7 @@ open "Things MCP.xcodeproj"
 
 #### For Any MCP Client
 
-1. Launch the Things MCP app and start the TCP server (default port 8000)
+1. Launch the TaskNote Bridge app and start the TCP server (default port 8000)
 
 2. Configure your MCP client to connect to `localhost:8000`
 
@@ -137,13 +137,13 @@ open "Things MCP.xcodeproj"
 - Host: `localhost` 
 - Port: `8000`
 
-> **Note**: Replace the path with the actual location where you installed the app. If you moved it to your Applications folder, use: `/Applications/Things MCP.app/Contents/Resources/launch_mcp_server.sh`
+> **Note**: Replace the path with the actual location where you installed the app. If you moved it to your Applications folder, use: `/Applications/TaskNote Bridge.app/Contents/Resources/launch_mcp_server.sh`
 
 4. Restart the Claude Desktop app.
 
 #### For VS Code (with MCP extension)
 
-1. First, ensure you have the Things MCP app installed and running.
+1. First, ensure you have the TaskNote Bridge app installed and running.
 
 2. Install the MCP extension for VS Code:
    - Open VS Code
@@ -161,7 +161,7 @@ open "Things MCP.xcodeproj"
         "inputs": [],
         "servers": {
             "things-swift": {
-                "command": "/Users/kb/things3-mcp-server/things-mcp/Things MCP.app/Contents/Resources/launch_mcp_server.sh",
+                "command": "/Users/kb/things3-mcp-server/things-mcp/TaskNote Bridge.app/Contents/Resources/launch_mcp_server.sh",
                 "args": []
             }
         }
@@ -169,15 +169,15 @@ open "Things MCP.xcodeproj"
 }
 ```
 
-> **Note**: Replace the path with the actual location where you installed the app. If you moved it to your Applications folder, use: `/Applications/Things MCP.app/Contents/Resources/launch_mcp_server.sh`
+> **Note**: Replace the path with the actual location where you installed the app. If you moved it to your Applications folder, use: `/Applications/TaskNote Bridge.app/Contents/Resources/launch_mcp_server.sh`
 
 4. Restart VS Code to load the MCP server.
 
 ### Usage 
 
-#### In the Things MCP App
+#### In the TaskNote Bridge App
 
-1. Launch the Things MCP app from your Applications folder.
+1. Launch the TaskNote Bridge app from your Applications folder.
 2. The app provides a native macOS interface for:
    - Viewing your Things 3 tasks, projects, and areas
    - Managing your Apple Notes
@@ -220,13 +220,13 @@ This server follows the standard MCP protocol and can work with any MCP-compatib
 ## Project Structure
 
 ```
-Things MCP.app/               # The macOS Swift application
+TaskNote Bridge.app/          # The macOS Swift application
 ├── Contents/
 │   ├── MacOS/                # Native Swift executable containing MCP server
-│   │   └── Things MCP        # Main app with embedded MCP server
+│   │   └── TaskNote Bridge   # Main app with embedded MCP server
 │   ├── Resources/            # Application resources
 │   └── Info.plist            # App bundle configuration
-├── Things MCP.xcodeproj/     # Xcode project
+├── TaskNote Bridge.xcodeproj/ # Xcode project
 ├── SwiftMCPServer.swift      # Core MCP server implementation
 ├── ThingsIntegration.swift   # Things 3 integration layer
 ├── NotesIntegration.swift    # Apple Notes integration layer
